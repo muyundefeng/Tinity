@@ -1,6 +1,5 @@
 package muyundefeng.trinity;
 
-import muyundefeng.input.InputDocument;
 import muyundefeng.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,30 +37,26 @@ public class CreateTrinity {
     private static Logger logger = LoggerFactory.getLogger(CreateTrinity.class);
 
     @SuppressWarnings("Since15")
-    public CreateTrinity() throws IOException {
+    public CreateTrinity(List<Text> texts) throws IOException {
         // TODO Auto-generated constructor stub
-        List<Text> texts = InputDocument.getDefaultReadHtml();
         texts.sort(new Comparator<Text>() {
             public int compare(Text t1, Text t2) {
                 // TODO Auto-generated method stub
-                if (StringUtil.length(t1) > StringUtil.length(t2)) {
+                if (StringUtil.length(t1) > StringUtil.length(t2)) {//这里的长度比较是每个文本所拥有的标签个数
+                    return -1;
+                } else if (StringUtil.length(t1) < StringUtil.length(t2)) {
                     return 1;
-                } else {
-                    if (StringUtil.length(t1) < StringUtil.length(t2)) {
-                        return -1;
-                    } else
-                        return 0;
-                }
+                } else
+                    return 0;
             }
         });
-        logger.info(texts.get(0).getText());
         Max = StringUtil.length(texts.get(0));
-        //System.out.println(Max);
-        System.out.println("Max=" + Max);
+        logger.info("max length html is " + Max);
         S = Max;
     }
 
     /**
+     * 创建三叉树
      * 对主要函数进行封装
      *
      * @param node
@@ -71,7 +66,8 @@ public class CreateTrinity {
     }
 
     /**
-     * 创建三叉树主函数
+     * 创建三叉树
+     * 其中max与min所代表的是一个文本字符串中所包含的标签的数目
      *
      * @param node
      */
@@ -79,7 +75,7 @@ public class CreateTrinity {
         boolean expanded = false;
         int size = Max;
         while (size >= Min && !expanded) {
-            expanded = expand(node, size);
+            expanded = expand(node, size);//将根节点进行扩展，其中size表示寻找模板的长度的最大值，node表示本节点
             size = size - 1;
         }
         if (expanded) {
@@ -106,8 +102,8 @@ public class CreateTrinity {
                 if (isVaribaleLeave(node.getSeparatorNode())) {
                     //leaves.add(node.getSeparatorNode());
                     logger.info("从分隔符开始分裂节点");
-                    System.out.println("Min=" + Min);
-                    System.out.println("size=" + (size + 1));
+                    logger.info("Min=" + Min);
+                    logger.info("size=" + (size + 1));
                     createTrinity(node2, size + 1, Min);
                 }
             }
@@ -152,12 +148,19 @@ public class CreateTrinity {
         return flag;
     }
 
+    /**
+     * 扩展本节点
+     *
+     * @param node 本节点
+     * @param size 共享模板的长度
+     * @return
+     */
     public boolean expand(Node node, int size) {
         boolean result = false;
-        int nodeSize = node.getTexts().size();
+        int nodeSize = node.getTexts().size();//确定node节点中所包含文本条目的数量
         logger.info("size1=" + size);
         if (nodeSize > 0) {
-            Map<Pattern, List<Map<Text, List<Integer>>>> map = findPattern(node, size);
+            Map<Pattern, List<Map<Text, List<Integer>>>> map = findPattern(node, size);//size寻求共享模板的长度
             if (map != null) {
                 for (Entry<Pattern, List<Map<Text, List<Integer>>>> entry : map.entrySet()) {
                     Pattern pattern = entry.getKey();
@@ -173,20 +176,14 @@ public class CreateTrinity {
     }
 
     /**
-     * @param node
+     * @param node 产生共享模板的节点
      * @param s    寻找长度为s的模板
      * @return返回一个map对象,map中的key表示Text中共享的模板,value值表示的是Text中Pattern的具体信息,具体位置
      */
     public Map<Pattern, List<Map<Text, List<Integer>>>> findPattern(Node node, int s) {
         boolean found = false;
-        Text base = findShortTestText(node);
-        //System.out.println(node);
-//		for(Text text:node.getTexts()){
-//			System.out.println(text.getText());
-//		}
-        if (base != null) {
-            logger.info("shortestText=" + base.getText());
-            logger.info("size=" + s);
+        Text base = findShortestText(node);//寻找包含标签数目最少的文本
+        if (base != null) {//作为比较的对象
             Pattern pattern = null;
             Map<Pattern, List<Map<Text, List<Integer>>>> targetMap = new HashMap<Pattern, List<Map<Text, List<Integer>>>>();
             List<Map<Text, List<Integer>>> patternList = null;
@@ -314,7 +311,7 @@ public class CreateTrinity {
 //			List<Integer> matches = list.get(i).get(text);
 //			Text text2 = new Text(computeSuffix(text,matches));
 //			suffixTexts.add(text2);
-//			
+//
 
 //			List<Integer> matches = list.get(i).get(text);
 //			Text text2 = new Text(computeSeperator(text,matches));
@@ -362,7 +359,7 @@ public class CreateTrinity {
         }
     }
 
-    public static Text findShortTestText(Node node) {
+    public static Text findShortestText(Node node) {
         List<Text> texts = node.getTexts();
         boolean flag = false;
         Text tempText = null;
@@ -428,7 +425,7 @@ public class CreateTrinity {
     }
 
     /**
-     * Text是否匹配Base子字符串(Text中是否包含Base中的子字符串)
+     * (Text中是否包含Base中的子字符串)
      *
      * @param text  node节点中一条Text
      * @param base  node节点中最短的Text
@@ -437,22 +434,21 @@ public class CreateTrinity {
      * @return
      */
     public static List<Integer> findMatches(Text text, Text base, int index, int size) {
-        String targetString = text.getText();
-        //String subString = base.getText().substring(index, index + size)
         logger.info("index=" + index);
-        //System.out.println("size="+size);
         String subString = StringUtil.subString(base, index, index + size);
-        logger.info("ＢａｓｅsubString=" + subString);
+        logger.info("Base subString=" + subString);
+        // int position = KMPUtils.getFirstMatchPos(text.getText(), subString);
+        // return position;
+
         List<Integer> list = new ArrayList<Integer>();
-        //System.out.println("size="+size);
         for (int i = 0; i <= StringUtil.length(text) - size; i++) {
             if (!text.getText().equals(base.getText())) {
-                String subStr = StringUtil.subString(new Text(targetString), i, i + size);
+                String subStr = StringUtil.subString(text, i, i + size);
                 logger.info("subStr=" + subStr);
+                //if (StringUtil.equals(subStr, subString)) {
                 if (subStr.equals(subString)) {
                     list.add(i);
                     list.add(size);
-                    //break;
                 }
             }
         }
@@ -478,9 +474,7 @@ public class CreateTrinity {
      * @return
      */
     public String computePreffix(Text text, List<Integer> list, Pattern pattern) {
-        //Node node = new Node();
         String raw = text.getText();
-        //System.out.println(text.getText());
         int index1 = list.get(0);
         int index = list.get(1).intValue();
         logger.info(index1 + "");
@@ -493,9 +487,7 @@ public class CreateTrinity {
                 return preffix;
             }
         }
-        //preffix = raw.substring(0, index);
         preffix = text.getText().split(pattern.getString())[0];
-        //preffix = StringUtil.subString(text, 0, index1);
         logger.info(preffix);
         return preffix;
     }
@@ -527,10 +519,8 @@ public class CreateTrinity {
         if (length > 2 && patternTimes(text.getText(), pattern) > 0) {
             int start = list.get(0) + list.get(1);
             int end = list.get(list.size() - 2);//如果出现多个共享模板，分隔符取最大长度
-            // sperator = text.getText().substring(start, end);
             sperator = StringUtil.subString(text, start, end);
             String temp = sperator;
-            //</b><br/>$35.99<br/><br/>测试结果是上述所示，需要考虑模板的后面与前面是否存在文本信息
             sperator += strExitAndAfterPattern(text, pattern.getString(), temp);
             sperator = strExitAndBeforePattern(text, pattern.getString(), temp) + sperator;
         } else {
@@ -567,7 +557,6 @@ public class CreateTrinity {
      *
      * @param text
      * @param pattern
-     * @param list    　表明了模板相关位置
      * @return
      */
     public static String strExitAndAfterPattern(Text text, String pattern, String sperator) {
@@ -586,7 +575,6 @@ public class CreateTrinity {
      *
      * @param text
      * @param pattern
-     * @param list    　表明了模板相关位置
      * @return
      */
     public static String strExitAndBeforePattern(Text text, String pattern, String sperator) {
@@ -607,28 +595,19 @@ public class CreateTrinity {
      * @return
      */
     public String computeSuffix(Text text, List<Integer> list, Pattern pattern) {
-        //System.out.println("");
         int index = list.get(0);
         int size = list.get(1);
         logger.info("index=" + index + "," + "size=" + size);
         String suffix = "";
-//		if(text.getText().indexOf(text.getText().length()-1) == '>')
-//		{
-//			logger.info("text="+text);
         if (index + size == StringUtil.length(text)) {
             if (afterPatternText(text, pattern) != null
                     && afterPatternText(text, pattern).length() > 0)
                 suffix = afterPatternText(text, pattern);
             else
                 suffix = NO_SUFFIX;
-        }
-//		}
-        else {
-            //suffix = text.getText().substring(index, index + size);
+        } else {
             String temp[] = text.getText().split(pattern.getString());
             suffix = temp[temp.length - 1];
-//			String temp = StringUtil.subString(text, index, index + size);
-//			suffix = text.getText().replace(temp, "");
         }
         logger.info("suffix=" + suffix);
         return suffix;
@@ -644,7 +623,6 @@ public class CreateTrinity {
         logger.info(text.getText());
         logger.info(pattern.getString());
         String temp[] = text.getText().split(pattern.getString());
-        String raw = null;
         if (temp.length > 1)
             return temp[temp.length - 1];
         else

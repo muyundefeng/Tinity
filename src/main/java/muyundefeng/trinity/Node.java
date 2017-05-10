@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Node {
 
-    private List<Text> texts;
+    private List<Text> texts;//定义该节点所容纳文件的内容
 
     private Pattern pattern;
 

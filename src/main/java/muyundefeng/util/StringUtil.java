@@ -21,7 +21,6 @@ public class StringUtil {
      * @return
      */
     public static int length(Text text) {
-        //String rawText = text.getText().replace("<[^>]*>", "");
         return count(text.getText()); //+ rawText.length();
     }
 
@@ -42,7 +41,7 @@ public class StringUtil {
     }
 
     /**
-     * 截取子字符串
+     * 截取子字符串，截取字符串的时候只关心字符串中所包含的标签
      *
      * @param text  　函数作用的目标
      * @param start 　子字符串开始的位置
@@ -52,7 +51,6 @@ public class StringUtil {
     public static String subString(Text text, int start, int end) {
         int realStart = realStartIndex(text, start);
         int realEnd = realEndIndex(text, end);
-        //System.out.println(realEnd);
         return text.getText().substring(realStart, realEnd);
     }
 
@@ -71,7 +69,6 @@ public class StringUtil {
 
             } else {
                 length = raw.indexOf("<");
-                //System.out.println("length="+length);
                 raw = raw.substring(length);
             }
         }
@@ -79,7 +76,6 @@ public class StringUtil {
         Matcher matcher = pattern.matcher(raw);
         int realStartIndex = 0;
         int count = 0;
-        //int realEndIndex = 0;
         String rawTemp = "";
         String temp = "";
         String match = "";
@@ -89,12 +85,9 @@ public class StringUtil {
                 temp = match;
                 match = matcher.group();
                 endMatch = match;
-                //System.out.println("matches="+match+","+"temp="+temp);
-
                 count++;
                 realStartIndex += match.length();
                 String betweenTokenStr = StringUtils.substringBetween(rawTemp, temp, match);
-                //System.out.println("betweenTokenStr="+betweenTokenStr);
                 if (betweenTokenStr != null && betweenTokenStr.length() > 0) {
 
                     realStartIndex += betweenTokenStr.length();
@@ -113,6 +106,7 @@ public class StringUtil {
      * @param text
      * @return
      */
+    @SuppressWarnings("Duplicates")
     public static int realEndIndex(Text text, int end) {
         String raw = text.getText();
         int length = 0;
@@ -158,67 +152,33 @@ public class StringUtil {
         return realEndIndex;
     }
 
-    /**查找字符串真正开始的位置
-     * @param text
-     * @param start
-     * @return
-     */
-    /*
-	public static int realStartIndex(Text text, int start){
-		String raw = text.getText();
-		Pattern pattern = Pattern.compile("<[^>]*>");  
-		Matcher matcher = pattern.matcher(raw);  
-		int realStartIndex = 0;
-		int count = 0;
-		while(matcher.find()){
-			count ++;
-			if(count != start + 1)
-			{
-				String match = matcher.group();
-				realStartIndex += match.length();
-				raw = raw.replaceFirst("<[^>]*>", "");
-			}
-			else
-				break;
-		}
-		int index = raw.indexOf("<");
-		return realStartIndex + index;
-	}
-	/**查找真正结束的位置
-	 * @param text
-	 * @param end
-	 * @return
-	 */
-	/*
-	public static int realEndIndex(Text text, int end){
-		String raw = text.getText();
-		Pattern pattern = Pattern.compile("<[^>]*>");  
-		Matcher matcher = pattern.matcher(raw);  
-		int realEndIndex = 0;
-		int count = 0;
-		String rawTemp = "";
-		String temp = "";
-		String match = "";
-		while(matcher.find()){
-			if(count != end )
-			{
-				temp = match;
-				match = matcher.group();
-				count ++;
-				realEndIndex += match.length();
-				String betweenTokenStr = StringUtils.substringBetween(rawTemp,temp, match);
-				if(betweenTokenStr!=null&&betweenTokenStr.length()>0){
-					realEndIndex += betweenTokenStr.length();
-				}
-				rawTemp = raw;
-				raw = raw.replaceFirst("<[^>]*>", "");
-			}
-			else
-				break;
-		}
-		
-		return realEndIndex;
-	}
-	*/
+    public static void main(String[] args) {
+        String str = "<div class=\"soso\" id=\"soso\">\n" +
+                "\t\t<div class=\"logo\" id=\"tencentlogo\" bossZone=\"logo\">\n" +
+                "\t\t\t<h1>\n" +
+                "\t\t\t\t<a href=\"http://www.qq.com\" class=\"qqlogo\" target=\"_blank\">\n" +
+                "\t\t\t\t\t<span class=\"undis\">腾讯网</span>\n" +
+                "\t\t\t\t</a>\n" +
+                "\t\t\t</h1>\n" +
+                "\t\t</div>\n";
+        System.out.println(extaLabel(str));
+    }
+
+    public static boolean equals(String src, String target) {
+        String srclabel = extaLabel(src);
+        String targetlabel = extaLabel(target);
+        return srclabel.equals(targetlabel) ? true : false;
+    }
+
+    public static String extaLabel(String str) {
+        String labelRegex = "(<[^>]*>)";
+        Pattern pattern = Pattern.compile(labelRegex);
+        Matcher matcher = pattern.matcher(str);
+        String re = "";
+        while (matcher.find()) {
+            re += matcher.group(1);
+        }
+        return re;
+    }
 
 }

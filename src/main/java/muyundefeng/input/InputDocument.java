@@ -3,6 +3,8 @@ package muyundefeng.input;
 
 import muyundefeng.trinity.Text;
 import muyundefeng.util.ProcessHtmlUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,8 +19,10 @@ public class InputDocument {
 
     private static final String FILE_DIR = "/home/lisheng/work/ExperData/htmls/";
 
+    private static Logger logger = LoggerFactory.getLogger(InputDocument.class);
+
     /**
-     * 默认读取html文件得目录是在resource目录之下
+     * 读取指定目录之下的文件列表
      *
      * @throws IOException
      */
@@ -27,8 +31,8 @@ public class InputDocument {
         List<Text> texts = new ArrayList<Text>();
         File file = new File(FILE_DIR);
         if (!file.exists())
-            System.out.println("不存在本目录!");
-        String htmlName[] = file.list();
+            logger.error("this file is not exist!");
+        String htmlName[] = file.list();//得到文件列表
         for (String str : htmlName) {
             File file2 = new File(FILE_DIR + str);
             String sourceText = "";
@@ -37,13 +41,11 @@ public class InputDocument {
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String Line = "";
                 while ((Line = bufferedReader.readLine()) != null) {
-                    sourceText += Line;
+                    sourceText += Line + "\n";
                 }
-                System.out.println("++++"+ProcessHtmlUtils.rmSomeScript(sourceText));
-                Text text = new Text(sourceText);
+                String afterProcessHtml = ProcessHtmlUtils.rmSomeScript(sourceText);
+                Text text = new Text(afterProcessHtml);
                 texts.add(text);
-                break;
-            } else {
             }
         }
         return texts;
