@@ -43,13 +43,13 @@ public class InputDocument {
                 while ((Line = bufferedReader.readLine()) != null) {
                     sourceText += Line;
                 }
-//                System.out.println("sourceText="+sourceText);
                 String afterProcessHtml = ProcessHtmlUtils.rmSomeScript(sourceText);
-                System.out.println(afterProcessHtml);
+
                 Text text = new Text(afterProcessHtml);
                 texts.add(text);
             }
         }
+//        System.exit(0);
         return texts;
     }
 

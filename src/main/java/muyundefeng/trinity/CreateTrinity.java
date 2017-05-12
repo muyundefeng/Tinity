@@ -16,8 +16,6 @@ import java.util.regex.Matcher;
  */
 public class CreateTrinity {
 
-//    public static final String DEFAULT_TOKEN = "char";//设置默认的的token大小,默认为一个字符
-
     public static int Max;
 
     public static int Min = 1;
@@ -35,6 +33,10 @@ public class CreateTrinity {
     private static int flag = 0;
 
     private static Logger logger = LoggerFactory.getLogger(CreateTrinity.class);
+
+    public CreateTrinity() {
+
+    }
 
     @SuppressWarnings("Since15")
     public CreateTrinity(List<Text> texts) throws IOException {
@@ -87,9 +89,9 @@ public class CreateTrinity {
                     logger.info("前缀节点元素为:" + text.getText() + " ");
                 }
                 System.out.println();
-                if (isVaribaleLeave(node.getPreffixNode())) {
+                if (isNotVaribaleLeave(node.getPreffixNode())) {
                     logger.info("从前缀开始分裂节点");
-                    createTrinity(node2, size + 1, Min);
+                    createTrinity(rebuildNode(node2), size + 1, Min);
                 }
             }
             if (node.getSeparatorNode() != null) {
@@ -98,11 +100,11 @@ public class CreateTrinity {
                     logger.info("分隔符节点元素为:" + text.getText() + " ");
                 }
                 System.out.println();
-                if (isVaribaleLeave(node.getSeparatorNode())) {
+                if (isNotVaribaleLeave(node.getSeparatorNode())) {
                     logger.info("从分隔符开始分裂节点");
                     logger.info("Min=" + Min);
                     logger.info("size=" + (size + 1));
-                    createTrinity(node2, size + 1, Min);
+                    createTrinity(rebuildNode(node2), size + 1, Min);
                 }
             }
             if (node.getSuffixNode() != null) {
@@ -111,9 +113,9 @@ public class CreateTrinity {
                     logger.info("后缀节点元素为:" + text.getText() + " ");
                 }
                 System.out.println();
-                if (isVaribaleLeave(node.getSuffixNode())) {
+                if (isNotVaribaleLeave(node.getSuffixNode())) {
                     logger.info("从后缀开始分裂节点");
-                    createTrinity(node2, size + 1, Min);
+                    createTrinity(rebuildNode(node2), size + 1, Min);
                 }
             }
         }
@@ -126,7 +128,7 @@ public class CreateTrinity {
      * @param node
      * @return
      */
-    public static boolean isVaribaleLeave(Node node) {
+    public static boolean isNotVaribaleLeave(Node node) {
         List<Text> list = node.getTexts();
         boolean flag = false;
         for (Text text : list) {
@@ -171,7 +173,8 @@ public class CreateTrinity {
     public Map<Pattern, List<Map<Text, List<Integer>>>> findPattern(Node node, int s) {
         boolean found = false;
         Text base = findShortestText(node);//寻找包含标签数目最少的文本
-        if (base != null) {//作为比较的对象
+        logger.info("shortest text is " + base.getText());
+        if (base != null) {
             Pattern pattern = null;
             //Map:key:模板样式，通文本来表示；value:表示该节点，该模板之下的list数据。
             Map<Pattern, List<Map<Text, List<Integer>>>> targetMap = new HashMap<Pattern, List<Map<Text, List<Integer>>>>();
@@ -179,26 +182,27 @@ public class CreateTrinity {
             for (int i = 0; i <= StringUtil.length(base) - s; i++) {
                 if (!found) {
                     patternList = new ArrayList<Map<Text, List<Integer>>>();
-                    found = true;
+//                    found = true;
                     for (Text text : node.getTexts()) {
                         List<Integer> matches = findMatches(text, base, i, s);
-                        found = isFound(matches);
-                        if (found) {
-                            if (flag == 0) {//只添加一次base
-                                List<Integer> baseList = new ArrayList<Integer>();//存放开始的标签位置，以及所包含的标签数目
-                                baseList.add(i);//标签开始的位置
-                                baseList.add(s);//从开始位置所容纳标签的个数
-                                logger.info("baseList=" + baseList);
-                                Map<Text, List<Integer>> map = new HashMap<Text, List<Integer>>();//map中的key是指html文本
-                                map.put(base, baseList);
+                        if (!text.getText().equals(base.getText())) {
+                            found = isFound(matches);
+                            if (found) {
+                                if (flag == 0) {//只添加一次base
+                                    List<Integer> baseList = new ArrayList<Integer>();//存放开始的标签位置，以及所包含的标签数目
+                                    baseList.add(i);//标签开始的位置
+                                    baseList.add(s);//从开始位置所容纳标签的个数
+                                    logger.info("baseList=" + baseList);
+                                    Map<Text, List<Integer>> map = new HashMap<Text, List<Integer>>();//map中的key是指html文本
+                                    map.put(base, baseList);
+                                    patternList.add(map);
+                                    flag++;
+                                }
+                                Map<Text, List<Integer>> map = new HashMap<Text, List<Integer>>();
+                                map.put(text, matches);
                                 patternList.add(map);
-                                flag++;
                             }
-                            Map<Text, List<Integer>> map = new HashMap<Text, List<Integer>>();
-                            map.put(text, matches);
-                            patternList.add(map);
                         }
-
                     }
                     if (found) {
                         pattern = new Pattern();
@@ -257,7 +261,6 @@ public class CreateTrinity {
         prefix.setTexts(preffixTexts);
         List<Text> separatorTexts = new ArrayList<Text>();
         for (Text text : node.getTexts()) {
-            logger.info(text.getText() + "\\\\\\\\");
             for (int j = 0; j < len; j++) {
                 Map<Text, List<Integer>> map = list.get(j);
                 boolean flag = false;
@@ -283,7 +286,6 @@ public class CreateTrinity {
         //计算后缀节点
         List<Text> suffixTexts = new ArrayList<Text>();
         for (Text text : node.getTexts()) {
-            logger.info(text.getText() + "\\\\\\\\");
             for (int j = 0; j < len; j++) {
                 Map<Text, List<Integer>> map = list.get(j);
                 boolean flag = false;
@@ -321,7 +323,7 @@ public class CreateTrinity {
         }
     }
 
-    public static Text findShortestText(Node node) {
+    public Text findShortestText(Node node) {
         List<Text> texts = node.getTexts();
         boolean flag = false;
         Text tempText = null;
@@ -373,7 +375,7 @@ public class CreateTrinity {
      * @param size  查找匹配模板的长度，base的长度
      * @return 返回的text开始的位置以及长度
      */
-    public static List<Integer> findMatches(Text text, Text base, int index, int size) {
+    public List<Integer> findMatches(Text text, Text base, int index, int size) {
         logger.info("index=" + index);
         logger.info("size=" + size);
         String subString = StringUtil.subString(base, index, index + size);
@@ -401,6 +403,31 @@ public class CreateTrinity {
 
     public static boolean isFound(List<Integer> list) {
         return list.size() > 0 ? true : false;
+    }
+
+    /**
+     * 在进行节点分裂之前先要进行节点预处理，
+     * nell
+     * <></>
+     * <></>
+     * 要去除nell元素
+     *
+     * @param node
+     * @return
+     */
+    public static Node rebuildNode(Node node) {
+        List<Text> texts = node.getTexts();
+        List<Text> newTexts = new ArrayList<Text>();
+        for (Text text : texts) {
+            if (text.getText().equals(NO_SEPERATOR) || text.getText().equals(NO_SEPERATOR)
+                    || text.getText().equals(NO_SUFFIX)) {
+                continue;
+            } else {
+                newTexts.add(text);
+            }
+        }
+        node.setTexts(newTexts);
+        return node;
     }
 
     /**
@@ -456,6 +483,7 @@ public class CreateTrinity {
         else
             return str;
     }
+
     /**
      * 计算后缀节点
      *
@@ -469,7 +497,7 @@ public class CreateTrinity {
         int start = index + length;
         text = text.substring(StringUtil.realStartIndex(new Text(text), start));
         text = text.replaceFirst("<[^>]*>", "");
-        if(text==null||text.length()==0)
+        if (text == null || text.length() == 0 || text.matches("\\s*"))
             text = NO_SUFFIX;
         return text;
     }
