@@ -72,4 +72,15 @@ public class Node {
     public void setSuffixNode(Node suffixNode) {
         this.suffixNode = suffixNode;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "texts=" + texts +
+                ", pattern=" + pattern +
+                ", preffixNode=" + preffixNode +
+                ", separatorNode=" + separatorNode +
+                ", suffixNode=" + suffixNode +
+                '}';
+    }
 }

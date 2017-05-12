@@ -41,9 +41,11 @@ public class InputDocument {
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String Line = "";
                 while ((Line = bufferedReader.readLine()) != null) {
-                    sourceText += Line + "\n";
+                    sourceText += Line;
                 }
+//                System.out.println("sourceText="+sourceText);
                 String afterProcessHtml = ProcessHtmlUtils.rmSomeScript(sourceText);
+                System.out.println(afterProcessHtml);
                 Text text = new Text(afterProcessHtml);
                 texts.add(text);
             }

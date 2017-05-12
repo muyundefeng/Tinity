@@ -81,16 +81,17 @@ public class TestTrinity {
         String string = texts.get(1).getText();
 
         node.setTexts(texts);
+        System.out.println(node);
         CreateTrinity trinity = new CreateTrinity(texts);
         trinity.createTrinity(node);
         preScanTrinity(node);
 
 
-        LearnTemplate learnTemplate = new LearnTemplate();
-        String result = learnTemplate.learnTemplate(node, "");
-        logger.info("result=" + result);
-        System.out.println(result);
-        System.out.println("string=" + string);
+//        LearnTemplate learnTemplate = new LearnTemplate();
+//        String result = learnTemplate.learnTemplate(node, "");
+//        logger.info("result=" + result);
+//        System.out.println(result);
+//        System.out.println("string=" + string);
 //        Pattern pat = Pattern.compile("<html><head>	<title>results</title></head><body>	<h1>Result:</h1>.*<br/><b>");
 //        Matcher mat = pat.matcher(string);
 //        //boolean rs = mat.find();

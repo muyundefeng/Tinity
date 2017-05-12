@@ -14,8 +14,8 @@ public class ExtraMainBodyUtils {
 
     public static String extraMainBody(String html, String label) {
         List<String> lines;
-        int blocksWidth = 3;//设置连续的文件块(这里每行代表一个文件块)
-        int threshold = 1;//在连续文件块中出现label标签的最小数目
+        int blocksWidth = 10;//设置连续的文件块(这里每行代表一个文件块)
+        int threshold = 5;//在连续文件块中出现label标签的最小数目
         int start;
         int end;
         StringBuilder text = new StringBuilder();
@@ -46,7 +46,7 @@ public class ExtraMainBodyUtils {
         text.setLength(0);
 
         for (int i = 0; i < indexDistribution.size() - 3; i++) {
-            if (indexDistribution.get(i) <= threshold && !boolstart) {
+            if (indexDistribution.get(i) > threshold && !boolstart) {
                 if (indexDistribution.get(i + 1).intValue() != 0
                         || indexDistribution.get(i + 2).intValue() != 0
                         || indexDistribution.get(i + 3).intValue() != 0) {

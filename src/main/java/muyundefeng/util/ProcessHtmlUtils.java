@@ -26,15 +26,15 @@ public class ProcessHtmlUtils {
             String str = matcher.group(2);
             String label = matcher.group(1);
             //将字符串str进行转义StringEscapeUtils
-            if (!label.contains("div")) {
+//            if (!label.contains("div")) {
                 for (String ch : regMetaCha) {
                     str = str.replace(ch, "\\" + ch);
                 }
                 html = html.replaceFirst(str, "");
-            }
+//            }
         }
-        html = ExtraMainBodyUtils.extraMainBody(html, "<div>");
-        System.out.println(html);
+//        html = ExtraMainBodyUtils.extraMainBody(html, "<p>");
+//        System.out.println(html);
         html = html.replaceAll("\\s", "");//移除空格
         html = html.replaceAll("<meta>", "");//移除meta元素
         html = html.replaceAll("<head>", "");//移除head元素
@@ -53,7 +53,7 @@ public class ProcessHtmlUtils {
         String afterProcessHtml = "";
         while (matcher1.find()) {
             String str = matcher1.group(0);
-            afterProcessHtml += str + "\n";
+            afterProcessHtml += str;
         }
         return afterProcessHtml;
     }

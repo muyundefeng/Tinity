@@ -1,13 +1,13 @@
 package muyundefeng.trinity;
 
 import muyundefeng.util.StringUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
 
 
 /**
@@ -16,7 +16,7 @@ import java.util.Map.Entry;
  */
 public class CreateTrinity {
 
-    public static final String DEFAULT_TOKEN = "char";//设置默认的的token大小,默认为一个字符
+//    public static final String DEFAULT_TOKEN = "char";//设置默认的的token大小,默认为一个字符
 
     public static int Max;
 
@@ -84,11 +84,10 @@ public class CreateTrinity {
             if (node.getPreffixNode() != null) {
                 Node node2 = node.getPreffixNode();
                 for (Text text : node2.getTexts()) {
-                    logger.info("前缀节点元素为" + text.getText() + " ");
+                    logger.info("前缀节点元素为:" + text.getText() + " ");
                 }
                 System.out.println();
                 if (isVaribaleLeave(node.getPreffixNode())) {
-                    //leaves.add(node.getPreffixNode());
                     logger.info("从前缀开始分裂节点");
                     createTrinity(node2, size + 1, Min);
                 }
@@ -96,11 +95,10 @@ public class CreateTrinity {
             if (node.getSeparatorNode() != null) {
                 Node node2 = node.getSeparatorNode();
                 for (Text text : node2.getTexts()) {
-                    logger.info("分隔符节点元素为" + text.getText() + " ");
+                    logger.info("分隔符节点元素为:" + text.getText() + " ");
                 }
                 System.out.println();
                 if (isVaribaleLeave(node.getSeparatorNode())) {
-                    //leaves.add(node.getSeparatorNode());
                     logger.info("从分隔符开始分裂节点");
                     logger.info("Min=" + Min);
                     logger.info("size=" + (size + 1));
@@ -110,24 +108,14 @@ public class CreateTrinity {
             if (node.getSuffixNode() != null) {
                 Node node2 = node.getSuffixNode();
                 for (Text text : node2.getTexts()) {
-                    logger.info("后缀节点元素为" + text.getText() + " ");
+                    logger.info("后缀节点元素为:" + text.getText() + " ");
                 }
                 System.out.println();
-                //logger.info("后缀节点元素成为叶子");
                 if (isVaribaleLeave(node.getSuffixNode())) {
-                    //logger.info("后缀节点元素成为叶子");
-                    //leaves.add(node.getSuffixNode());
                     logger.info("从后缀开始分裂节点");
                     createTrinity(node2, size + 1, Min);
                 }
             }
-//			for(Node node2:leaves){
-//				logger.info(leaves.size()+"");
-//				for(Text text:node2.getTexts()){
-//					logger.info(text.getText());
-//				}
-//				createTrinity(node2, size + 1, Min);
-//			}
         }
     }
 
@@ -178,13 +166,14 @@ public class CreateTrinity {
     /**
      * @param node 产生共享模板的节点
      * @param s    寻找长度为s的模板
-     * @return返回一个map对象,map中的key表示Text中共享的模板,value值表示的是Text中Pattern的具体信息,具体位置
+     * @return/Map:key:模板样式，通文本来表示；value:表示该节点，该模板之下的该节点的信息，包括文本以及文本对应的位置
      */
     public Map<Pattern, List<Map<Text, List<Integer>>>> findPattern(Node node, int s) {
         boolean found = false;
         Text base = findShortestText(node);//寻找包含标签数目最少的文本
         if (base != null) {//作为比较的对象
             Pattern pattern = null;
+            //Map:key:模板样式，通文本来表示；value:表示该节点，该模板之下的list数据。
             Map<Pattern, List<Map<Text, List<Integer>>>> targetMap = new HashMap<Pattern, List<Map<Text, List<Integer>>>>();
             List<Map<Text, List<Integer>>> patternList = null;
             for (int i = 0; i <= StringUtil.length(base) - s; i++) {
@@ -195,21 +184,18 @@ public class CreateTrinity {
                         List<Integer> matches = findMatches(text, base, i, s);
                         found = isFound(matches);
                         if (found) {
-                            logger.info("flag=" + flag);
                             if (flag == 0) {//只添加一次base
-                                List<Integer> baseList = new ArrayList<Integer>();
-                                baseList.add(i);
-                                baseList.add(s);
-                                Map<Text, List<Integer>> map = new HashMap<Text, List<Integer>>();
+                                List<Integer> baseList = new ArrayList<Integer>();//存放开始的标签位置，以及所包含的标签数目
+                                baseList.add(i);//标签开始的位置
+                                baseList.add(s);//从开始位置所容纳标签的个数
+                                logger.info("baseList=" + baseList);
+                                Map<Text, List<Integer>> map = new HashMap<Text, List<Integer>>();//map中的key是指html文本
                                 map.put(base, baseList);
                                 patternList.add(map);
-                                logger.info("baseText=" + base.getText() + "," + "base=" + baseList);
-                                logger.info(patternList.toString());
                                 flag++;
                             }
                             Map<Text, List<Integer>> map = new HashMap<Text, List<Integer>>();
                             map.put(text, matches);
-                            logger.info("Text=" + text.getText() + "," + "base=" + matches);
                             patternList.add(map);
                         }
 
@@ -217,12 +203,12 @@ public class CreateTrinity {
                     if (found) {
                         pattern = new Pattern();
                         pattern.setString(subSqence(base, i, s));
+                        logger.info("pattern is:" + pattern.getString() + "============");
                         targetMap.put(pattern, patternList);
                         break;
                     }
                 }
             }
-            logger.info(targetMap.toString());
             return targetMap;
         } else {
             return null;
@@ -233,34 +219,27 @@ public class CreateTrinity {
     /**
      * 根据传递过来的参数,对节点node进行分裂:前缀,分隔符与后缀
      *
-     * @param node
-     * @param list
-     * @param pattern
+     * @param node    该节点信息
+     * @param list    表示该节点的信息，
+     * @param pattern 模板字符串
      */
     public void createChilder(Node node, List<Map<Text, List<Integer>>> list, Pattern pattern) {
         Node prefix = new Node();
         Node separator = new Node();
         Node suffix = new Node();
+        logger.info("some info is:" + list.toString());
+        logger.info("pattern is" + pattern.getString());
         node.setPattern(pattern);
-        int i = 0;
         int len = list.size();
-        logger.info("" + list.size());
-        List<Text> preffixTexts = new ArrayList<Text>();
+        List<Text> preffixTexts = new ArrayList<Text>();//创建前缀节点所包含文本的链表
         for (Text text : node.getTexts()) {
-            //System.out.println(text);
             for (int j = 0; j < len; j++) {
                 Map<Text, List<Integer>> map = list.get(j);
-                //map.keySet()
                 boolean flag = false;
-                logger.info("map=" + map);
                 for (Entry<Text, List<Integer>> entry : map.entrySet()) {
                     Text tempText = entry.getKey();
-                    logger.info(tempText.toString());
-                    if (tempText.hashCode() == text.hashCode()) {
-                        //System.out.println("list="+list.get(i));
-                        logger.info(text.getText());
-                        List<Integer> matches = entry.getValue();
-                        logger.info(matches.toString());
+                    if (tempText.getText().equals(text.getText())) {
+                        List<Integer> matches = entry.getValue();//获得匹配的位置以及匹配的长度
                         Text text2 = new Text(computePreffix(text, matches, pattern));
                         preffixTexts.add(text2);
                         flag = true;
@@ -273,26 +252,19 @@ public class CreateTrinity {
             }
             continue;
         }
+        logger.info("total preffix is=" + preffixTexts);
+        logger.info("first preffix is=" + preffixTexts.get(0));
         prefix.setTexts(preffixTexts);
         List<Text> separatorTexts = new ArrayList<Text>();
         for (Text text : node.getTexts()) {
-//			List<Integer> matches = list.get(i).get(text);
-//			Text text2 = new Text(computeSeperator(text,matches));
-//			separatorTexts.add(text2);
-            //System.out.println(text);
+            logger.info(text.getText() + "\\\\\\\\");
             for (int j = 0; j < len; j++) {
                 Map<Text, List<Integer>> map = list.get(j);
-                //map.keySet()
                 boolean flag = false;
-                logger.info("map=" + map);
                 for (Entry<Text, List<Integer>> entry : map.entrySet()) {
                     Text tempText = entry.getKey();
-                    logger.info(tempText.toString());
-                    if (tempText.hashCode() == text.hashCode()) {
-                        //System.out.println("list="+list.get(i));
-                        logger.info(text.getText());
+                    if (tempText.getText().equals(text.getText())) {
                         List<Integer> matches = entry.getValue();
-                        logger.info(matches.toString());
                         Text text2 = new Text(computeSeperator(text, matches, pattern));
                         separatorTexts.add(text2);
                         flag = true;
@@ -305,32 +277,21 @@ public class CreateTrinity {
             }
             continue;
         }
+        logger.info("total separatorTexts=" + separatorTexts);
         separator.setTexts(separatorTexts);
+
+        //计算后缀节点
         List<Text> suffixTexts = new ArrayList<Text>();
         for (Text text : node.getTexts()) {
-//			List<Integer> matches = list.get(i).get(text);
-//			Text text2 = new Text(computeSuffix(text,matches));
-//			suffixTexts.add(text2);
-//
-
-//			List<Integer> matches = list.get(i).get(text);
-//			Text text2 = new Text(computeSeperator(text,matches));
-//			separatorTexts.add(text2);
-            //System.out.println(text);
+            logger.info(text.getText() + "\\\\\\\\");
             for (int j = 0; j < len; j++) {
                 Map<Text, List<Integer>> map = list.get(j);
-                //map.keySet()
                 boolean flag = false;
-                logger.info("map=" + map);
                 for (Entry<Text, List<Integer>> entry : map.entrySet()) {
                     Text tempText = entry.getKey();
-                    logger.info(tempText.toString());
-                    if (tempText.hashCode() == text.hashCode()) {
-                        //System.out.println("list="+list.get(i));
-                        logger.info(text.getText());
+                    if (tempText.getText().equals(text.getText())) {
                         List<Integer> matches = entry.getValue();
-                        logger.info(matches.toString());
-                        Text text2 = new Text(computeSuffix(text, matches, pattern));
+                        Text text2 = new Text(computeSuffix(text.getText(), matches, pattern));
                         suffixTexts.add(text2);
                         flag = true;
                         break;
@@ -344,6 +305,7 @@ public class CreateTrinity {
 
         }
         suffix.setTexts(suffixTexts);
+        logger.info("total suffix =" + suffixTexts);
         node.setPreffixNode(prefix);
 
         node.setSeparatorNode(separator);
@@ -367,7 +329,6 @@ public class CreateTrinity {
         for (Text text : texts) {
             flag |= nullText(text);
         }
-        logger.info("flag=" + flag);
         if (!flag) {
             return null;
         }
@@ -380,7 +341,6 @@ public class CreateTrinity {
                         && !texts.get(i).getText().equals(NO_SEPERATOR)
                         && !texts.get(i).getText().equals(NO_SUFFIX)) {
                     temp = StringUtil.length(texts.get(i));
-                    logger.info("text=" + texts.get(i).getText() + "," + "length=" + temp);
                     tempText = texts.get(i);
                 }
             }
@@ -405,50 +365,29 @@ public class CreateTrinity {
     }
 
     /**
-     * 对节点进行重构
-     *
-     * @param node
-     */
-    public static void handleNode(Node node) {
-        List<Text> texts = node.getTexts();
-        List<Text> newText = new ArrayList<Text>();
-        for (Text text : texts) {
-            String raw = text.getText();
-            if (raw.equals(NO_PREFFIX) || raw.equals(NO_SEPERATOR) || raw.equals(NO_SUFFIX)) {
-
-            } else {
-                Text text2 = new Text(raw);
-                newText.add(text2);
-            }
-        }
-        node.setTexts(newText);
-    }
-
-    /**
-     * (Text中是否包含Base中的子字符串)
+     * 这里的匹配是指对于标签的匹配
      *
      * @param text  node节点中一条Text
      * @param base  node节点中最短的Text
-     * @param index 开始索引的位置
-     * @param size  查找匹配模板的长度
-     * @return
+     * @param index 开始索引的位置,是base的索引位置.
+     * @param size  查找匹配模板的长度，base的长度
+     * @return 返回的text开始的位置以及长度
      */
     public static List<Integer> findMatches(Text text, Text base, int index, int size) {
         logger.info("index=" + index);
+        logger.info("size=" + size);
         String subString = StringUtil.subString(base, index, index + size);
-        logger.info("Base subString=" + subString);
-        // int position = KMPUtils.getFirstMatchPos(text.getText(), subString);
-        // return position;
 
         List<Integer> list = new ArrayList<Integer>();
         for (int i = 0; i <= StringUtil.length(text) - size; i++) {
-            if (!text.getText().equals(base.getText())) {
+            if (!text.getText().equals(base.getText())) {//排除自己比较的问题
                 String subStr = StringUtil.subString(text, i, i + size);
-                logger.info("subStr=" + subStr);
-                //if (StringUtil.equals(subStr, subString)) {
-                if (subStr.equals(subString)) {
+                if (subStr.equals(subString)) {//这里的相等是指纯标签字符串的相等
+                    logger.info("subStr=" + subStr);
+                    logger.info("subString=" + subString);
                     list.add(i);
                     list.add(size);
+                    break;
                 }
             }
         }
@@ -457,7 +396,6 @@ public class CreateTrinity {
 
     public static String subSqence(Text base, int index, int size) {
         String subString = StringUtil.subString(base, index, index + size);
-        logger.info("pattern is=" + subString);
         return subString;
     }
 
@@ -470,30 +408,30 @@ public class CreateTrinity {
      * 在进行相关的合并,组成新的Node节点.
      *
      * @param text 该节点中的Text
-     * @param list 匹配生成的模板相关位置
+     * @param list 匹配生成的模板相关位置，位置以及匹配长度
      * @return
      */
     public String computePreffix(Text text, List<Integer> list, Pattern pattern) {
         String raw = text.getText();
-        int index1 = list.get(0);
-        int index = list.get(1).intValue();
-        logger.info(index1 + "");
+        int index = list.get(0);//
         String preffix = "";
 
-        if (index1 == 0) {
+        if (index == 0) {
             //如果匹配的模式开始的位置是0,则不存在前缀
             if (!exitStrBefore(raw)) {
                 preffix = NO_PREFFIX;
                 return preffix;
             }
         }
+        //一个html可能存在多个相同的pattern
         preffix = text.getText().split(pattern.getString())[0];
+
         logger.info(preffix);
         return preffix;
     }
 
     /**
-     * 进行前缀匹配之前查看是否存在字符串
+     * 进行前缀之前查看是否存在字符串
      *
      * @param str
      * @return
@@ -504,129 +442,52 @@ public class CreateTrinity {
         return str1.length() > 0 ? true : false;
     }
 
-    /**
-     * 计算节点的后缀
-     *
-     * @param text
-     * @param list
-     * @return
-     */
     public String computeSeperator(Text text, List<Integer> list, Pattern pattern) {
-        int length = list.size();
-        logger.info(list.toString());
-        String sperator = "";
-        //满足该条件存在分隔符,如果存在多个符合条件的分隔符,只需要取第一分隔符就可以
-        if (length > 2 && patternTimes(text.getText(), pattern) > 0) {
-            int start = list.get(0) + list.get(1);
-            int end = list.get(list.size() - 2);//如果出现多个共享模板，分隔符取最大长度
-            sperator = StringUtil.subString(text, start, end);
-            String temp = sperator;
-            sperator += strExitAndAfterPattern(text, pattern.getString(), temp);
-            sperator = strExitAndBeforePattern(text, pattern.getString(), temp) + sperator;
-        } else {
-            sperator = NO_SEPERATOR;
-        }
-        logger.info(sperator);
-        return sperator;
-    }
-
-    /**
-     * 判断共享模板出现的次数
-     * <br><b>java<br><b>
-     *
-     * @param text
-     * @param pattern
-     * @return
-     */
-    public static int patternTimes(String text, Pattern pattern) {
-        String tempStr = text;
-        String temp = pattern.getString();
-        int times = 0;
-        while (true && tempStr.contains(temp)) {
-            int index = text.indexOf(temp);
-            if (index != -1) {
-                times++;
-                tempStr = tempStr.replaceFirst(temp, "");
-            }
-        }
-        return times;
-    }
-
-    /**
-     * 查看分隔符后面，如果存在则返回相关的字符串信息
-     *
-     * @param text
-     * @param pattern
-     * @return
-     */
-    public static String strExitAndAfterPattern(Text text, String pattern, String sperator) {
-        String betweenTextSep = StringUtils.substringBetween(text.getText(), sperator, pattern);
-
-        if (betweenTextSep.length() > 0) {
-            return betweenTextSep;
-        } else {
-            return "";
-        }
-
-    }
-
-    /**
-     * 查看分隔符前面，如果存在则返回相关的字符串信息
-     *
-     * @param text
-     * @param pattern
-     * @return
-     */
-    public static String strExitAndBeforePattern(Text text, String pattern, String sperator) {
-        String betweenTextSep = StringUtils.substringBetween(text.getText(), pattern, sperator);
-        if (betweenTextSep.length() > 0) {
-            return betweenTextSep;
-        } else {
-            return "";
-        }
-
-    }
-
-    /**
-     * 计算节点的后缀
-     *
-     * @param text
-     * @param list
-     * @return
-     */
-    public String computeSuffix(Text text, List<Integer> list, Pattern pattern) {
+        String patternStr = pattern.getString() + "(.+?)" + pattern.getString();
+        java.util.regex.Pattern pattern1 = java.util.regex.Pattern.compile(patternStr);
         int index = list.get(0);
-        int size = list.get(1);
-        logger.info("index=" + index + "," + "size=" + size);
-        String suffix = "";
-        if (index + size == StringUtil.length(text)) {
-            if (afterPatternText(text, pattern) != null
-                    && afterPatternText(text, pattern).length() > 0)
-                suffix = afterPatternText(text, pattern);
-            else
-                suffix = NO_SUFFIX;
-        } else {
-            String temp[] = text.getText().split(pattern.getString());
-            suffix = temp[temp.length - 1];
+        Matcher matcher = pattern1.matcher(text.getText().substring(index));
+        String str = null;
+        while (matcher.find()) {
+            str = matcher.group(1).toString();
         }
-        logger.info("suffix=" + suffix);
-        return suffix;
+        if (str == null)
+            return NO_SEPERATOR;
+        else
+            return str;
     }
-
     /**
-     * 在满足index+size == StringUtil.length(text)条件下，判断标签后面是否存在文本信息
+     * 计算后缀节点
      *
-     * @param text
+     * @param text    要处理的文本
+     * @param pattern 后缀节点数据
      * @return
      */
-    public static String afterPatternText(Text text, Pattern pattern) {
-        logger.info(text.getText());
-        logger.info(pattern.getString());
-        String temp[] = text.getText().split(pattern.getString());
-        if (temp.length > 1)
-            return temp[temp.length - 1];
-        else
-            return null;
+    public static String computeSuffix(String text, List<Integer> list, Pattern pattern) {
+        int index = list.get(0);
+        int length = list.get(1) - 1;
+        int start = index + length;
+        text = text.substring(StringUtil.realStartIndex(new Text(text), start));
+        text = text.replaceFirst("<[^>]*>", "");
+        if(text==null||text.length()==0)
+            text = NO_SUFFIX;
+        return text;
     }
 
+
+    public static void main(String[] args) {
+        String str = "<title>调查显示多数美国人仍然只用电视机看传统电视节目_科技_腾讯网</title>\n" +
+                "<div>Recode中文站5月11日报道据美国互动广告局（IAB）的最新研究报告称，超过半数（56%）的美国人已经能够在电视机上观看互联网视频，但是他们仍然只用电视机看传统电视节目。报告指出，自2015年以来，能够在电视机上观看互联网视频的美国成年人比例增加了20个百分点，他们要么可以通过电视机本身观看互联网视频，要么可以通过各种机顶盒比如Chromecast观看互联网视频。但是美国成年人使用电视机的很大一部分时间（39%）都是用电视机来观看传统电视节目。他们用了大约24%的时间通过Netflix、YouTube或Hulu观看互联网视频。但是从另一个角度来看，随着</div><a>\n" +
+                "</a>和Netflix等流媒体服务公司提供的互联网电视服务越来越多，互联网电视服务在观众观看时间中所占的比例却在增长。那些使用电视机观看Netflix或Hulu的互联网视频的人观看互联网视频的数量和频率不断增加。拥有流媒体功能电视机的美国人中，大约一半（46%）的人每天都要观看流媒体视频，高于2015年的32%。他们观看的流媒体视频是哪些内容呢？79%的人观看的是互联网电视节目，70%的人观看的是各种原创剧比如Netflix的《怪奇物语》或Hulu的《使女的故事》。（编译/林靖东）</div>\n" +
+                "<a>摩拜回应高管贪腐传言：纯属捏造事实，已向警方报案</a>\n" +
+                "<a>小米与中国电信战略合作将推不限流量“米粉卡”</a>\n" +
+                "<a>谷歌居然自己搞了个广告拦截器到底意欲何为？</a>";
+        List<Integer> list = new ArrayList<Integer>();
+        list.add(1);
+        list.add(2);
+        Pattern pattern = new Pattern();
+        pattern.setString("</title>\n" +
+                "<div>");
+        System.out.println(computeSuffix(str, list, pattern));
+    }
 }
