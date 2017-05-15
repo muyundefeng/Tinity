@@ -1,6 +1,6 @@
 package TestRegex;
 
-import muyundefeng.trinity.Text;
+import com.muyundefeng.extractor.trinity.Text;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
