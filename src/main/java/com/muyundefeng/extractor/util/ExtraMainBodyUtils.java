@@ -15,7 +15,7 @@ public class ExtraMainBodyUtils {
     @SuppressWarnings("Duplicates")
     public static String extraMainBody(String html, String label) {
         List<String> lines;
-        int blocksWidth = 2;//设置连续的文件块(这里每行代表一个文件块)
+        int blocksWidth = 1;//设置连续的文件块(这里每行代表一个文件块)
         int threshold = 1;//在连续文件块中出现label标签的最小数目
         int start;
         int end;
@@ -42,10 +42,8 @@ public class ExtraMainBodyUtils {
         boolean boolstart = false, boolend = false;
         text.setLength(0);
         for (int i = 0; i < indexDistribution.size() - blocksWidth; i++) {
-            if (indexDistribution.get(i) > threshold && !boolstart) {
-                if (indexDistribution.get(i + 1).intValue() != 0
-                        || indexDistribution.get(i + 2).intValue() != 0
-                        || indexDistribution.get(i + 3).intValue() != 0) {
+            if (indexDistribution.get(i) >= threshold && !boolstart) {
+                if (indexDistribution.get(i + 1).intValue() != 0) {
                     boolstart = true;
                     start = i;
                     continue;
@@ -74,37 +72,19 @@ public class ExtraMainBodyUtils {
     }
 
     public static void main(String[] args) {
-        String str = "<div>\n" +
-                "  <ul>\n" +
-                "<li><em></em><a>首页</a></li>\n" +
-                "<li><a>新闻</a></li>\n" +
-                "\n" +
-                "<li><a>体育</a></li>\n" +
-                "<li><a>娱乐</a></li>\n" +
-                "<li><a>视频</a></li>\n" +
-                "<li><a>财经</a></li>\n" +
-                "<li><a>证券</a></li>\n" +
-                "<li><a>汽车</a></li>\n" +
-                "<li><a>房产</a></li>\n" +
-                "<li><a>科技</a></li>\n" +
-                "<li><a>数码</a></li>\n" +
-                "<li><a>游戏</a></li>\n" +
-                "<li><a>教育</a></li>\n" +
-                "<li><a>时尚</a></li>\n" +
-                "<li><a>文化</a></li>\n" +
-                "<li>\n" +
-                "  <a><span>更多</span></a>\n" +
-                "    <div>\n" +
-                "      <a>动漫</a>\n" +
-                "      <a>读书</a>\n" +
-                "      <a>儿童</a> \n" +
-                "      <a>星座</a>\n" +
-                "      <a>精品课</a> \n" +
-                "      <a>全部频道</a>\n" +
-                "    </div>\n" +
-                "</li>\n" +
-                "  </ul>\n" +
-                "</div>";
+        String str = "<a>水电外送消纳矛盾暗涌西南\"弃水\"形势严峻</a>\n" +
+                "<a>发改委：今年煤炭去产能将超1.5亿吨地条钢退出</a>\n" +
+                "<a>专家谈勒索病毒：获利渠道不切断可能还会遭攻击</a>\n" +
+                "<a>微整形市场“潜规则”：兜售针剂推荐工作室注射</a>\n" +
+                "<a>贫困女大学生3年捐2万自己每个月花不到两百</a>\n" +
+                "<a>药品零加成政策落地“有喜有忧”医院“倒贴”补缺</a>\n" +
+                "<a>破解以药养医须坚持“三医联动”</a>\n" +
+                "<a>银监会：房地产贷款风险在可控范围内</a>\n" +
+                "<a>“市场调整+监管风暴”下险资何去何从</a>\n" +
+                "<a>1883只个股“跌破”熔断时价格暴风跌7成</a>\n" +
+                "<li>客户端</li>\n" +
+                "<li>搜索</li>\n" +
+                "<li>频道</li>";
         System.out.println(extraMainBody(str, "<a>"));
     }
 }

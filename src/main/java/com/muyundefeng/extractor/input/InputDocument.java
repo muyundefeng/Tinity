@@ -13,11 +13,11 @@ import java.util.List;
 
 /**
  * @author lisheng
- *         处理输入的html文档,并将html文档转化为字符串
+ * 处理输入的html文档,并将html文档转化为字符串
  */
 public class InputDocument {
 
-    private static final String FILE_DIR = "/home/lisheng/work/ExperData/htmls/";
+    private static final String FILE_DIR = "/home/lisheng/work/ExperData/htmls/chinanews/";
 
     private static Logger logger = LoggerFactory.getLogger(InputDocument.class);
 
@@ -44,6 +44,8 @@ public class InputDocument {
                     sourceText += Line + "\n";
                 }
                 String afterProcessHtml = ProcessHtmlUtils.rmSomeScript(sourceText);
+                System.out.println(afterProcessHtml);
+//                System.exit(0);
                 Text text = new Text(afterProcessHtml);
                 texts.add(text);
             }

@@ -1,0 +1,717 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<script type="text/javascript">
+  var pvinsight_page_ancestors = '143746642;143746653;451178592;493029541';
+</script>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=gb2312" />
+<title>习近平为出席论坛的外方嘉宾举行欢迎宴会和文艺演出-搜狐新闻</title>
+<meta name="keywords" content="习近平 宴会">
+<meta name="description" content="新华社北京5月14日电（记者白洁、谭晶晶）国家主席习近平14日在人民大会堂举行宴会并在国家大剧院举行文艺演出，欢迎出席“一带一路”国际合作高峰论坛的外方代表团团">
+<link rel="canonical" href="http://news.sohu.com/20170515/n493029541.shtml"/>
+<meta name="robots" content="all">
+<!-- 购买url变量获取 -->
+<script type="text/javascript">
+ var shoppingCnf = {url:''};
+</script>
+<!-- 购买url变量获取end -->
+<script type="text/javascript">
+  var category =  '143746642;143746653;451178592;493029541';  var videoNum = 0;  var relate_from_sohu = true;
+</script>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<script src="http://www.sohu.com/sohuflash_1.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://js.sohu.com/library/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="http://news.sohu.com/upload/article/2012/js/tongji_v2013110101.js"></script>
+
+<script type="text/javascript">
+jQuery(function(jq){
+	//标签
+	function changeTab(lis, divs, nums, nowCls){
+		lis.each(function(i){
+			var els = jq(this);
+			els.mouseenter(function(){
+				lis.removeClass(nowCls);
+				divs.stop().hide();
+				jq(this).addClass(nowCls);
+				divs.eq(i).show();
+			});
+		}).eq(nums).mouseenter();
+	}
+	
+	
+	jq(".fontsize").hover(function(){
+		jq(".fontsize-layer").show();
+		},function(){
+		jq(".fontsize-layer").hide();
+	});
+	
+        jq(".print").hover(function(){
+                   jq(".print-layer").show();
+                   },function(){
+                   jq(".print-layer").hide();
+         });
+
+	var phoneNumInput = jq(".rightbar-wrapper .phoneNews .rssArea .Ftxt"),
+		phoneNumBtn = jq(".rightbar-wrapper .phoneNews .rssArea .Fbtn");
+	phoneNumInput.hover(function(){  // xlx
+		jq(this).parent().addClass("current");
+	},function(){
+		jq(this).parent().removeClass("current");
+	});
+	phoneNumInput.focus(function(){
+		var _this = $(this);
+		var val = _this.val();
+		if(val == '输入手机号码'||val == '手机号码输入错误！'||val == '此号码发送次数过多！'||val == '失败！'){
+			_this.val("");
+			_this.parent().removeClass("error");
+		}
+	}).blur(function(){
+		var _this = $(this);
+		if(_this.val() == ''){
+			_this.val('输入手机号码');
+			_this.parent().removeClass("error");
+		}
+	});
+	
+	jq(".rightbar-wrapper .phoneNews .Fbtn").click(function(){// 订阅按钮点击
+		var _mobile = phoneNumInput.val();	
+		if(!(/^1[3458]\d{9}$/.test(_mobile))){
+			phoneNumInput.val("手机号码输入错误！");
+			phoneNumInput.parent().addClass("current error");
+		}else{
+			var formData = {
+					"number" : _mobile
+					};
+			var submitUrl = "http://api.k.sohu.com/api/client/sendmsg.go?callback=?";
+			$.ajax({
+				url: submitUrl,
+				data: formData,
+				dataType:"jsonp",
+				success: function(data){
+					var _code = data.data;				
+					var _msg = "";
+					switch(_code){
+						case "1":
+							phoneNumInput.parent().addClass("current error succeed");
+							phoneNumInput.add(phoneNumBtn).hide();
+							break;
+						case "0":
+							_msg = "失败！";
+							break;
+						case "12001":
+							_msg = "手机号码输入错误！";	
+							break;
+						case "12003":
+							_msg = "此号码发送次数过多！";
+							break;			
+					};
+					phoneNumInput.val(_msg);
+					phoneNumInput.parent().addClass("current error");
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown){
+					alert("error");
+				}
+			});			
+		}
+	});
+});
+//去搜狐首页的检测
+function toHomePage(){
+                   var serverUrl = "http://www.n-s.cn/news.png";
+                   $.ajax({
+                type: "GET",
+                url: serverUrl,
+                dataType: "jsonp",
+                success:function(){}
+            });             
+}
+//转换字号
+function doZoom(size){	
+	jQuery("#contentText").css("fontSize",size);
+}
+var printArticle = function(){
+	jQuery.getScript("http://news.sohu.com/upload/article/2012/js/print_roll.js",function(){printer.print()},true)
+}
+var topicId = 334087882;
+var grobal_arg={};
+grobal_arg['topicId']=topicId;
+var jumpUrl=function(x){
+	var url = '', e = encodeURIComponent, s = screen, d = document, wd = 0, hg = 0, u = d.location , y = x,topicId =grobal_arg.topicId;
+	//缺个我的搜狐的分享的跳转URL
+	//topicId的确认方式
+	switch (y)
+	{
+	case 't':	url ="http://t.sohu.com/third/post.jsp?link="+e(u.href)+"&title="+e(d.title);wd = 660;hg = 470;break;
+	case 'bai':	url ="http://bai.sohu.com/share/blank/addbutton.do?link="+e(u.href)+"&title="+e(d.title);wd = 480;hg = 340;break;
+	case 'douban':	url ="http://www.douban.com/recommend/?url="+e(u.href)+"&title="+e(d.title);wd = 460;hg = 340;break;
+	case 'renren':	url ="http://share.renren.com/share/buttonshare?link="+e(u.href)+"&title="+e(d.title);wd = 590;hg = 430;break;
+	case 'kaixin':	url ="http://www.kaixin001.com/repaste/share.php?rurl="+e(u.href)+"&rtitle="+e(d.title);wd = 540;hg = 360;break;
+	case 'itb':     var ctxt = $('#contentText').length>0?$('#contentText').text().replace(/<[^>].*?>/g,'').substr(0,120):'';
+			url ="http://tieba.baidu.com/i/sys/share?link="+e(u.href)+"&type=text&title="+e(d.title)+"&content="+e(ctxt);wd = 626;hg = 436;
+			break;
+	case 'go139':	url ="http://go.139.com/ishare.do?shareUrl="+e(u.href)+"&title="+e(d.title)+"&sid=20dd04a99380c2e8d56cf187f6658169";wd = 630;hg = 500;break;
+	case 'qq':	url ="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url="+e(u.href);wd = 900;hg = 500;break;
+           case 'sohukan': url ="http://kan.sohu.com/share/?href="+e(u.href)+"&title="+e(d.title)+"&appkey=1550c1b2513a1461a4ea4914af8aa8fe";wd = 760;hg = 477;break;
+	default :	return false;
+	}
+	var a=function(){
+		if (!window.open(url, 'sohushare', ['toolbar=0,status=0,resizable=1,width='+ wd +',height='+ hg +',left='+ (s.width - wd) / 2+ ',top='+ (s.height - hg) / 2]))
+			u.href = [url].join('');
+	}
+	if (/Firefox/.test(navigator.userAgent)){
+		setTimeout(a, 0);
+	}else{
+		a();
+	}
+
+	var stat = (new Image);
+	try{stat.src = "http://219.234.82.222/zhuanfa/index.php?newsId=" + /http:\/\/(.*)(\.sohu.com\/.*\/n)(.{9})/g.exec(document.location)[3] + "&newsName=" + e(d.title) + "&newsUrl=" + d.location.href + "&postId=" + x;
+	}catch(e){}
+}
+//媒体来源
+function media_span_url(id_media_span_url) {
+    if(id_media_span_url) {
+        id_media_span = jQuery('#media_span');
+        if(!id_media_span.find('a').length) {
+            id_media_span.html('<a href=\'' + id_media_span_url + '\' target=\'_blank\'>' + id_media_span.html() + '</a>');			
+        }
+    }
+}
+ 
+</script>
+<script src="http://img.wan.sogou.com/cdn/ufo/fid/fid.js"></script>
+<script>
+    var fid;
+    Sogou_FID.get(function(sid){
+        fid = sid;       
+    });
+</script>
+<link type="text/css" rel="stylesheet" href="http://css.sohu.com/upload/global1.4.1.css" />
+<link type="text/css" rel="stylesheet" href="http://news.sohu.com/upload/article/2012/style.v20150623.css" />
+<style>
+.original-tit{font-size:14px;line-height:24px;padding-left:28px;}
+</style>
+
+<script  type='text/javascript'>
+var sogou_is_brand = new Object();
+sogou_is_brand["pid"]  = 'sohu__brand';
+sogou_is_brand["charset"]   = 'gb2312';
+sogou_is_brand["sohuurl"] = document.location.href;
+</script>
+
+</head>
+
+<body>
+<div data-type="roll" data-appid="1079" id="isohu-topbar"></div>
+<link type="text/css" rel="stylesheet" href="http://news.sohu.com/upload/itoolbar/cms/itoolbar.201410281438.css" charset="UTF-8" />
+<style type="text/css"> 
+#innerToolBar{width:980px;}
+</style>
+<script src="http://news.sohu.com/upload/itoolbar/itoolbar.cms.loader.201410281438.js" charset="UTF-8"></script>
+
+<!-- 导航 st -->
+<div id="nav" class="area"><a class="first" href="http://www.sohu.com/">首页</a>-<a href="http://news.sohu.com/">新闻</a>-<a class="n3" href="http://mil.sohu.com/">军事</a>-<a href="http://cul.sohu.com/">文化</a>-<a href="http://history.sohu.com/">历史</a>-<a class="n3" href="http://sports.sohu.com/">体育</a>-<a href="http://sports.sohu.com/nba.shtml">NBA</a>-<a href="http://tv.sohu.com/">视频</a>-<a class="n3" href="http://soyule.sohu.com/">娱谈</a>-<a href="http://business.sohu.com/">财经</a>-<a href="http://view.sohu.com/">世相</a>-<a class="n3" href="http://it.sohu.com/">科技</a>-<a href="http://auto.sohu.com/">汽车</a>-<a href="http://www.focus.cn">房产</a>-<a class="n3" href="http://fashion.sohu.com/">时尚</a>-<a href="http://health.sohu.com/">健康</a>-<a href="http://learning.sohu.com/">教育</a>-<a class="n3" href="http://baobao.sohu.com/">母婴</a>-<a href="http://travel.sohu.com/">旅游</a>-<a href="http://chihe.sohu.com/">美食</a>-<a class="last" href="http://astro.sohu.com/">星座</a></div>
+<!-- 导航 end -->
+
+
+<!-- 频道导航 st -->
+<div id="channel-nav" class="area">
+	<div id="mypos" class="left" itemprop="mypos"><a href="http://news.sohu.com/" target="_blank"><img src="http://news.sohu.com/upload/pagerevision20090916/news_logo3.gif" width="110" height="24" alt="" /></a><span>&gt; <a href=http://news.sohu.com/guoneixinwen.shtml>国内新闻</a> &gt; <a href=http://news.sohu.com/guoneixinwen/gaocengdongtai/>高层动态</a></span></div>
+	<div class="navigation" style="display:none" ><a href=http://news.sohu.com/>新闻中心</a> &gt; <a href=http://news.sohu.com/guoneixinwen.shtml>国内新闻</a> &gt; <a href=http://news.sohu.com/guoneixinwen/gaocengdongtai/>高层动态</a></div>
+	<div class="right"><a href="http://news.sohu.com/guoneixinwen.shtml" target="_blank">国内</a> | <a href="http://news.sohu.com/guojixinwen.shtml" target="_blank">国际</a> | <a href="http://news.sohu.com/shehuixinwen.shtml" target="_blank">社会</a> | <a href="http://mil.news.sohu.com/" target="_blank">军事</a> | <a href="http://star.sohu.com/" target="_blank">评论</a>
+
+
+<style>
+
+                   #channel-nav{position:relative;}
+
+                   #channel-nav .logo-ad{position:absolute; left:490px; top:5px;}
+
+         </style>
+
+         <div class="logo-ad">
+
+                   
+         </div></div>
+</div>
+<!-- 频道导航 end -->
+<div id="container" class="area" itemscope itemtype="http://schema.org/NewsArticle" itemref="mypos">
+	<div class="content-wrapper grid-675">
+		<!-- 广告 -->
+		<div class="ad675">
+			<SOHUADCODE></SOHUADCODE>
+		</div>		
+		<div class="content-box clear">
+			<!-- 文章标题 -->
+			<h1 itemprop="headline">习近平为出席论坛的外方嘉宾举行欢迎宴会和文艺演出</h1>
+			<!-- 正文标签 -->
+			<div class="label-ad clear" id="commentTab">
+				<div class="label">
+					<ul>
+						<li class="text-label" itemprop="isHot" content="true"><em>正文</em></li>
+						<li class="com-label"><em><a href="http://pinglun.sohu.com/s493029541.html" itemprop="discussionUrl">我来说两句<span class="f12">(<span class="red" id="changyan_parti_unit"><img src="http://comment.news.sohu.com/upload/comment4/images/loading_blue.gif" width="16px" height="16px" /></span>人参与)</span></a></em></li>
+					</ul>
+				</div>
+				<div class="ad">
+					<div class="adFrag"><SOHUADCODE></SOHUADCODE></div>
+					<div class="scan-handset" id="scan-handset"><a class="scan-icon" href="javascript:void(0)">扫描到手机</a></div>
+				</div>
+				<div class="scan-layer" id="scan-layer-id">
+					<div class="scan-pic"><img width="99" height="99" alt="" src="http://news.sohu.com/upload/article/2012/images/pic/scan_pic_98x98.gif"></div>
+					<div class="scan-layer-close"><a href="javascript:void(0)">关闭</a></div>
+				</div>
+				<script type="text/javascript">
+					jQuery(function(jq){
+					    if(jq("#scan-layer-id .scan-pic img").length > 0){
+	                           var theU = "http://s1.rr.itc.cn/qrcode/m/n/"+493029541+".png";
+	                           jq("#scan-layer-id .scan-pic img").attr("src",theU);
+	                    }
+						jq("#scan-handset").click(function(){
+							jq("#scan-layer-id").show();
+						});
+						jq("#scan-layer-id .scan-layer-close a").click(function(){
+							jq("#scan-layer-id").hide();
+						});
+					});
+				</script>
+			</div>				
+			<!-- 时间 来源 -->
+		    <div class="time-fun clear">
+				<div class="time-source">
+					<div class="time" id="pubtime_baidu" itemprop="datePublished" content="2017-05-15T08:30:01+08:00">2017-05-15 08:30:01</div>						
+					<div class="source">
+						
+						<span class="sc" id="source_baidu" >来源：<span id="media_span" itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><span itemprop="name">新华网</span></span></span>
+						 <span id="author_baidu">作者：白洁 谭晶晶</span> 
+						
+					</div>				
+				</div>
+				<style>
+				#container .time-fun .time-source{width:420px}
+				#container .time-fun .time-source .source{width:293px}
+				#container .time-fun .function .phone-ctcp a{padding-left:16px;background:url(http://news.sohu.com/upload/article/2012/images20140613/down.gif) no-repeat 0 1px}
+				</style>
+                <div class="function">
+					<ul>
+						<li class="share-li" style="background-position: right 0!important;margin-right: 5px!important;padding-right: 4px!important;padding-left:0!important">
+							<style>
+								#container .share.sm{float:right;}
+								#container .share ul{float:right;}
+								#container .share.sm li{float:left;margin:0 5px 0 0;display:inline;padding:0!important;}
+								#container .share.sm li a{background:url(http://i3.itc.cn/20160325/3649_a4efbd35_27d1_0290_fe74_2c9efe4cf22e_1.png) no-repeat;padding:0!important;}
+								#container .share.sm li a{float:left;height:16px;width:16px;display:block;}
+								#container .share.sm .sina a{background-position:0 0}
+								#container .share.sm .weixin a{background-position: -20px 0}
+								#container .share.sm .qzone a{background-position: -41px 0}
+								#container .share.sm .rr a{background-position: -62px 0}
+							</style>
+							<div class="share clear sm" id="share">
+				              <ul>
+				                   <li class="sina"><a href="javascript:void(0)" onclick="dispatch('.bds_tsina')" title="分享到新浪微博"></a><em></em></li>
+				                   <li class="weixin"><a href="javascript:void(0)" onclick="dispatch('.bds_weixin')" t`itle="分享给微信好友"></a><em></em></li>
+				                   <li class="qzone"><a href="javascript:void(0)" onclick="jumpUrl('qq')" title="分享给QQ好友"></a><em></em></li>
+				                   <li class="rr"><a href="javascript:void(0)" onclick="jumpUrl('renren')" title="分享到人人网"></a></li>
+				         		</ul>
+							</div>
+						</li>
+						<li class="phone-ctcp"><a href="http://k.sohu.com/" target="_blank">手机看新闻</a></li>
+						<li class="fontsize"><a href="javascript:void(0)"></a>
+							<div class="fontsize-layer"><a href="javascript:doZoom(16)">大</a>|<a href="javascript:doZoom(14)">中</a>|<a href="javascript:doZoom(12)">小</a></div>
+						</li>
+						<li class="print"><a href="javascript:printArticle()"></a>
+							<div class="print-layer"><a href="javascript:printArticle()">打印</a></div>
+						</li>                                      
+					</ul>
+				</div>
+			</div>
+			
+			<div class="original-tit">
+				    原标题：习近平为出席“一带一路”国际合作高峰论坛的外方代表团团长及嘉宾举行欢迎宴会和文艺演出
+			         </div>
+			
+			<SOHUADCODE></SOHUADCODE>
+			
+            <div class="video" id="editVideo">
+<div class="text-video-focus">
+<script type="text/javascript" src="http://news.sohu.com/upload/jieli/js/showVrsPlayer.js"></script>
+<script type="text/javascript">
+	// <![CDATA[
+showVrsPlayer({
+vid: '3744067',
+pid: '314606944',
+width: '580',
+height: '366',
+autoplay: 'false',
+playercover: 'http://i0.itc.cn/20170515/70b_a5b93580_1681_da51_6a47_5292405d9045_1.jpg',
+playerID: 'player44',
+showCtrlBar: 1
+});
+// ]]>
+</script>
+</div>
+<div class="num-share">
+<div id="video-Title"><h3></h3></div>
+<div class="vbtn-fa"></div>
+<div class="btn-num" id="newsEditVideo"> <a href="javascript:void(0)" class="vbtn-ding"> &nbsp; </a> <a
+  href="javascript:void(0)" class="vbtn-cai"> &nbsp; </a> </div>
+</div>
+</div>
+<script>
+_vid = "3744067";
+_tvId = "89204381";
+_pid = "314606944";
+_title = "";
+_url = "http://tv.sohu.com/20170514/n493003170.shtml?src=sohuBP_left_QR";
+cover = "http://i0.itc.cn/20170515/70b_a5b93580_1681_da51_6a47_5292405d9045_1.jpg";
+_newsEditVideoTitle = '《共赴千年之约 同唱和平颂歌》';
+_ban = true;
+</script>
+<script src="http://tv.sohu.com/upload/static/frag/news_video.js"></script>
+<link rel="stylesheet" href="http://news.sohu.com/upload/among/lastpagevideo580_0416.css"/>
+<script>
+(function ($) {
+$(document).ready(function () {
+var videoTitle = $('#video-Title') || null;
+if (videoTitle.length > 0) {
+videoTitle.find('h3').html(_newsEditVideoTitle);
+}
+if(_title === ''|| _title === null){
+_title = _newsEditVideoTitle;
+}
+});
+var _crpr = $('#newsEditVideo');
+if(_ban === true){
+_crpr.remove();
+}
+})(jQuery);
+</script>
+            
+			
+			<!-- 正文 -->
+			<div class="text clear" id="contentText">
+				<div itemprop="articleBody"><p>　　新华社北京5月14日电（记者白洁、谭晶晶）国家主席习近平14日在人民大会堂举行宴会并在国家大剧院举行文艺演出，欢迎出席“一带一路”国际合作高峰论坛的外方代表团团长及嘉宾。国务院副总理张高丽出席。</p>
+<p>　　初夏的北京，草木葱茏，生机盎然。长安街两侧，红灯笼高挂，星光璀璨；天安门广场，红旗猎猎，一组组嵌有祥云、如意图案的立体花坛绚丽多姿。古都北京，迎来一个历史与未来交融的盛会。</p>
+<p>　　晚6时许，出席高峰论坛领导人圆桌峰会、高级别会议的嘉宾国政要和国际组织负责人及配偶相继抵达人民大会堂。</p>
+<p>　　习近平和夫人彭丽媛在大会堂二层迎宾厅迎候，同贵宾们一一握手，互致问候。在大型壁画《江山如此多娇》前，习近平和彭丽媛同外方代表团团长及配偶集体合影留念。</p>
+<p>　　人民大会堂宴会厅，乐音绕梁，花团锦簇。在悠扬欢快的迎宾曲中，习近平和彭丽媛同贵宾们一同步入宴会厅。</p>
+<p>　　习近平发表致辞，代表中国政府和人民热烈欢迎各位贵宾的到来。习近平指出，北京是千年古都，见证了历史的沧桑变迁。北京也是一座现代新城，随着中国发展不断展现新的风貌。北京更是一座国际化大都市，东西方不同文明时时刻刻在这里相遇和交融。北京从历史上的小城，成为今天的国际化大都市，向我们揭示了一个道理：人类生活在共同的家园，拥有共同的命运，人类历史始终在不同民族、不同文化的相遇相知中向前发展。</p>
+<p>　　习近平指出，2000多年前，我们的先辈们就是怀着友好交往的朴素愿望，开辟了古丝绸之路。今天，我们传承古丝绸之路精神，共商“一带一路”建设，是历史潮流的沿续，也是面向未来的正确抉择。“一带一路”建设承载着我们对文明交流的渴望，将让人类文明更加绚烂多彩；承载着我们对和平安宁的期盼，将让各国共同打造和谐家园，建设和平世界；承载着我们对共同发展的追求，将帮助各国打造甘苦与共、命运相连的发展共同体；承载着我们对美好生活的向往，将让理想变为现实，让人民幸福安康。</p>
+<p>　　习近平强调，我们正走在一条充满希望的道路上。只要我们相向而行，心连心，不后退，不停步，我们终能迎来路路相连、美美与共的那一天，我们的事业会像古丝绸之路一样流传久远、泽被后代。</p>
+<p>　　宴会中，席间伴奏了来自30个参加圆桌峰会国家的曲目，体现了“一带一路”沿线不同地域文化的交流融合。</p>
+<p>　　宴会后，习近平和彭丽媛同贵宾们一同前往国家大剧院观看主题为《千年之约》的文艺演出。</p>
+<p>　　演出在恢弘大气的歌舞中拉开帷幕，精美的敦煌壁画，飞天的仙女，大唐盛世的百乐齐鸣，展现出古都喜迎各方宾客的盛景。两位歌唱家深情演绎《我爱你中国》和意大利民歌《我的太阳》。民乐组合演奏“碧海雅韵”呈现了海上丝绸之路的梦幻旅程。舞蹈“雀之灵”中，茶马古道上的一群孔雀翩翩起舞。钢琴独奏“北京四季”将悦耳的钢琴弹奏与屏幕上的北京绘画融为一体。芭蕾舞“水墨丝语”讲述了一位远方来客在烟雨江南邂逅一群身着青花瓷服饰的少女的故事。“群英荟萃”展示了中国戏曲绝活的斑斓绚丽。中外儿童和歌唱家齐唱“共同家园·和平颂”。演出在《歌声与微笑》的优美旋律中落幕。</p>
+<p>　　马凯、王沪宁、刘延东、刘奇葆、汪洋、孟建柱、栗战书、郭金龙、杨晶、王晨、杨洁篪、郭声琨、王勇、万钢、周小川、梁振英等出席上述活动。</p><script type="text/javascript">// <![CDATA[
+media_span_url('http://news.xinhuanet.com/world/2017-05/14/c_1120970731.htm')
+//]]></script></div>
+                
+				<!-- seo标签描述 -->
+				<div style="display:none;">
+					<span id="url" itemprop="url">http://news.sohu.com/20170515/n493029541.shtml</span>
+					<span id="indexUrl" itemprop="indexUrl">news.sohu.com</span>
+					<span id="isOriginal" itemprop="isOriginal">false</span>
+					<span id="sourceOrganization" itemprop="sourceOrganization" itemscope itemtype="http://schema.org/Organization"><span itemprop="name">新华网</span></span>
+					<span id="author" itemprop="author" itemscope itemtype="http://schema.org/Organization"><span itemprop="name">白洁 谭晶晶</span></span>
+					<span id="isBasedOnUrl" itemprop="isBasedOnUrl">http://news.xinhuanet.com/world/2017-05/14/c_1120970731.htm</span>
+					<span id="genre" itemprop="genre">report</span>
+					<span id="wordCount" itemprop="wordCount">1556</span>
+					<span id="description" itemprop="description">新华社北京5月14日电（记者白洁、谭晶晶）国家主席习近平14日在人民大会堂举行宴会并在国家大剧院举行文艺演出，欢迎出席“一带一路”国际合作高峰论坛的外方代表团团</span>
+				</div>
+			</div>	
+           <div class="original-title"><span class="editer" id="editor_baidu">(责任编辑：钟庆辉 UN660)</span>
+			</div>	
+							
+			<!-- 底部分享 -->
+			<div class="bdsharebuttonbox" style="display:none!important"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+			<style>
+				#container .share{margin:0 auto;padding:0 0 20px;height:26px;position:relative}
+				#container .share .editer{float:left;margin-top:5px}
+				#container .share ul{float:right;}
+				#container .share li{float:left;margin:0 5px 0 0;display:inline}
+				#container .share.lg li a{background:url(http://i3.itc.cn/20160325/3649_a4efbd35_27d1_0290_fe74_2c9efe4cf22e_1.png) no-repeat;}
+				#container .share.lg li a{float:left;height:26px;width:26px;display:block;}
+				#container .share.lg .sina a{background-position:0 -56px}
+				#container .share.lg .weixin a{background-position: -31px -56px}
+				#container .share.lg .qzone a{background-position: -63px -56px}
+				#container .share.lg .rr a{background-position: -94px -56px}
+			</style>
+			<div class="share clear lg" id="share">
+			  <ul>
+			       <li class="share-tt">分享：</li>
+			       <li class="sina"><a href="javascript:void(0)" onclick="dispatch('.bds_tsina')" title="分享到新浪微博"></a><em></em></li>
+			       <li class="weixin"><a href="javascript:void(0)" onclick="dispatch('.bds_weixin')" title="分享给微信好友"></a><em></em></li>
+			       <li class="qzone"><a href="javascript:void(0)" onclick="jumpUrl('qq')" title="分享给QQ好友"></a><em></em></li>
+			       <li class="rr"><a href="javascript:void(0)" onclick="jumpUrl('renren')" title="分享到人人网"></a></li>
+					</ul>
+				<div class="go_sohu_home"><a href="http://www.sohu.com" target="_blank" onclick="toHomePage();"></a></div>
+				<script type="text/javascript">
+					function dispatch(arg){
+						var el = $(arg)[0];
+						var evt = document.createEvent('Event');    
+				        evt.initEvent("click",true,true);    
+				        el.dispatchEvent(evt);    
+					}
+				</script>
+				<style>
+					#container .share .world-link{float:left;display:inline;margin:5px 0 0 160px;line-height:20px}
+					#container .share .world-link a{padding-left:16px;display:inline-block;background:url(http://news.sohu.com/upload/article/2012/images20140613/down.gif) no-repeat 0 2px}
+				</style>
+				<div class="world-link"><a href="http://k.sohu.com" target="_blank">手机看新闻</a></div>    						
+			</div>	
+			<!-- 底部分享结束 -->
+			
+			
+			
+			<!-- 本文相关推荐-->
+            <!-- 其它频道 -->
+<style>
+#container .tagHotg .tagIntg li a{color:#000}
+#container .tagHotg .tagIntg li a:hover{color:#c00}
+</style>
+			
+			<script type="text/javascript">var entityId = 493029541;</script>	
+			
+				<div id="SOHUCS" sid=""></div>
+<script>
+document.domain = "sohu.com";
+if(typeof entityId != 'undefined'){
+    document.getElementById('SOHUCS').setAttribute('sid',entityId); 
+    var category = typeof category != 'undefined' ? category :'';                 
+    var _config = {
+                   hideList: true,               
+                   hideSubList: true,            
+                    jumpUrl: 'http://pinglun.sohu.com/s[topicId].html',
+                    varName: entityId, 
+                    customSohu: true,
+                    cyanTitle : '我来说两句',
+                    commentHide : true ,
+                    pageSize: 10,
+                    categoryId: category
+                }
+    }
+    window.SCS_NO_IFRAME = true;
+</script>
+
+<script src="http://assets.changyan.sohu.com/upload/changyan.js?appid=cyqemw6s1&conf=prod_0266e33d3f546cb5436a10798e657d97" charset="utf-8"></script>
+<script type="text/javascript" src="http://assets.changyan.sohu.com/upload/plugins/plugins.count.js"></script>
+				
+			<!--图文转载-->
+			<script type="text/javascript" src="http://news.sohu.com/upload/article/2012/js/pubPicTextV6_20130926.js"></script>
+			<script type="text/javascript">
+				var newsId = 493029541;
+				jQuery.picText.init();
+			</script>
+			<!--图文转载 end-->
+			
+					
+	
+			
+			
+			
+		</div>
+	</div>	
+	<div class="rightbar-wrapper grid-300">
+		
+       
+		
+	
+					
+		<!-- 信息 -->
+		<div class="sohu-info clear" >
+			<div class="contact-icon"></div>
+			<div class="contact-txt">
+				<p>客服热线：86-10-58511234</p>
+				<p>客服邮箱：<a href="mailto:kf@vip.sohu.com" target="_blank">kf@vip.sohu.com</a></p>
+			</div>
+		</div>		
+	</div>
+	<div class="content-footer"></div>
+</div>
+
+<script type="text/javascript" src="http://stock.sohu.com/upload/stock/business_news_1.1.3.js"></script>
+<script type="text/javascript" src="http://stock.sohu.com/upload/stock/related_stock_1.0.1.js"></script>
+<script type="text/javascript" src="http://getip.js.sohu.com/ip/"></script>
+<script type="text/javascript"> 
+if (new_ip == null) var new_ip=2130706433;
+var dns_requrl="\<script type=\"text/javascript\" src=\"http://" + new_ip +".sohuns.com/ip/\"\>\</script\>";
+document.write(dns_requrl);
+</script>
+
+<!-- 标准尾 start -->
+<div collection="Y">
+<div class="clear"></div>
+	<div id="foot" class="Area area">
+		<a href="javascript:void(0)" onClick=this.style.behavior='url(#default#homepage)';this.setHomePage('http://www.sohu.com');return false;>设置首页</a>
+		- <a href=http://pinyin.sogou.com/ target=_blank rel="nofollow">搜狗输入法</a>
+		- <a href=http://pay.sohu.com/ target=_blank rel="nofollow">支付中心</a>
+		- <a href=http://hr.sohu.com target=_blank rel="nofollow">搜狐招聘</a>
+		- <a href=http://ad.sohu.com/ target=_blank rel="nofollow">广告服务</a>
+		- <a href=http://sohucallcenter.blog.sohu.com/ target=_blan rel="nofollow"k>客服中心</a>
+		- <a href=http://corp.sohu.com/s2006/contactus/ target=_blank rel="nofollow">联系方式</a>
+		- <a href=http://www.sohu.com/about/privacy.html target=_blank rel="nofollow">保护隐私权</a>
+		- <a href=http://investors.sohu.com/ target=_blank rel="nofollow">About SOHU</a>
+		- <a href=http://corp.sohu.com/indexcn.shtml target=_blank rel="nofollow">公司介绍</a>
+		- <a href=http://sitemap.sohu.com/ target=_blank>网站地图</a>
+		- <a href=http://roll.sohu.com/ target=_blank>全部新闻</a>
+		- <a href=http://blog.sohu.com/roll target=_blank>全部博文</a>
+		<br />Copyright <span class="fontArial">&copy;</span> 2017 Sohu.com Inc. All Rights Reserved. 搜狐公司 <span class="unline"><a href="http://corp.sohu.com/s2007/copyright/" target="_blank" rel="nofollow">版权所有</a></span>
+		<br />搜狐不良信息举报邮箱：<a href="mailto:jubao@contact.sohu.com">jubao@contact.sohu.com</a>
+	</div>
+	<SCRIPT language=JavaScript src="http://a1.itc.cn/pv/js/spv.1309051632.js"></SCRIPT>
+	<script language="javascript" src="http://js.sohu.com/wrating20120726.js"></script>
+	<script language="javascript"> 
+		var  _wratingId = null;
+		try{
+		_wratingId = _getAcc();
+		}catch(e){}
+		if(_wratingId !=null){
+		document.write('<scr'+'ipt type="text/javascript" src="http://sohu.wrating.com/a1.js"></scr'+'ipt>');
+		}
+		</script>
+		<script language="javascript"> 
+		if(_wratingId !=null){
+		document.write('<scr'+'ipt type="text/javascript">');
+		document.write('var vjAcc="'+_wratingId+'";');
+		document.write('var wrUrl="http://sohu.wrating.com/";');
+		document.write('try{vjTrack();}catch(e){}');
+		document.write('</scr'+'ipt>');
+		}
+	</script>
+	<!--SOHU:DIV_FOOT-->
+</div>
+<!-- 标准尾 end -->
+
+<script type="text/javascript">
+<!--
+	function sogouRelateNews(itm){
+		var i=new Image();
+        var len=itm.getAttribute("len");   var  ind= itm.getAttribute("ind");
+        len=(len==null)?"":len;   ind=(ind==null)?"":ind;
+        if(len == "" || ind == "" ) {
+           i.src='http://pingback.sogou.com/rltnews.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&'+Math.random();
+        } else {
+           i.src='http://pingback.sogou.com/rltnews.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&len='+len+'&ind='+ind+'&'+Math.random();
+        }
+	    return true;
+	}
+
+	function sogouRelateWeb(itm){
+		var i=new Image();
+        var len=itm.getAttribute("len");  var  ind= itm.getAttribute("ind");
+        len=(len==null)?"":len; ind=(ind==null)?"":ind;
+        if(len == "" || ind == "" ) {
+	 	     i.src='http://pingback.sogou.com/rltweb.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&'+Math.random();
+        } else {
+		     i.src='http://pingback.sogou.com/rltweb.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&len='+len+'&ind='+ind+'&'+Math.random();
+        }
+		return true;
+	}
+
+	function sogouRelateSaybar(itm){
+		var i=new Image();
+		i.src='http://pingback.sogou.com/rltsb.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&'+Math.random();
+		return true;
+	}
+
+	function sogouRelateBlog(itm){
+		var i=new Image();
+		i.src='http://pingback.sogou.com/rltblog.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&'+Math.random();
+		return true;
+	}
+	
+	function sogouHotSaybar(itm){
+		var i=new Image();
+		i.src='http://pingback.sogou.com/rlthotsb.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&'+Math.random();
+		return true;
+	}
+
+    function sogouRelateVideoNews(itm){
+      var i=new Image();
+      var len=itm.getAttribute("len");  var  ind= itm.getAttribute("ind");
+      len=(len==null)?"":len;    ind=(ind==null)?"":ind;
+      if(len == "" || ind == "" ) {
+        i.src='http://pingback.sogou.com/rltvideonews.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&'+Math.random();
+      } else {
+        i.src='http://pingback.sogou.com/rltvideonews.png?durl='+escape(itm.href)+'&surl='+escape(window.location)+'&len='+len+'&ind='+ind+'&'+Math.random();
+      }
+	  return true;
+    }
+
+
+//-->
+</script>
+<SOHUADCODE>																																																																																																																																																																														<Script language="Javascript">var cWidth=980;</script>
+
+<script type="text/javascript">
+	require(["sjs/matrix/ad/special"], function(special) {
+	special.ones({
+		itemspaceid : 10632,
+		adsrc : 201,
+		max_turn : 1,
+		order : 3,
+		options:{
+			pos : "left"
+		}
+	});
+
+	special.start();
+	});
+</script>
+
+
+<Script language="Javascript" src="http://images.sohu.com/bill/s2013/PVJS/adm2012-20130926min.js"></Script>
+<script src='http://images.sohu.com/bill/s2010/gates/sohucstech/javascript/954092d923b0e377f0a9d4d41a0937c4.js' type='text/javascript'></script>
+<!—不能删除 投飞行广告时也必须带上—>
+<script type="text/javascript">
+if(typeof(document.pv)=='undefined') document.pv = new Array();var _a=new Image();
+_a.src='http://xls.go.sohu.com/201012/ee970cf0f5c53c86014a16fd32d9629a.php?a=0';
+document.pv.push(_a);
+imp(urlpath,133);
+if(PVUV_CheckArticle("gn11",24,1)){imp(urlpath,134);}
+if(PVUV_CheckArticle("gn12",24*365,1)){imp(urlpath,135);}
+
+</script>
+
+<script type="text/javascript">
+if(typeof(document.pv)=='undefined') document.pv = new Array();var _a=new Image();
+_a.src='http://xls.go.sohu.com/201204/ba6906fb71bb9c0a5d72babe338483b9.php?a=9';
+document.pv.push(_a);
+</script>
+<!—不能删除—>
+<!--<Script language="Javascript">
+AD = new ADM("FLOAT", 2);
+    AD.src = "http://images.sohu.com/bill/s2009/shanbai/baojie/6yue/1001000602.swf";
+    AD.href="http://goto.sogou.com/200905/256711c20f526ea88028870e1a36e2cc.php";
+    AD.tag="";
+    AD.imp="";
+    AddSchedule(AD);
+</script>-->
+<Script language="Javascript">if(jQuery){jQuery.getScript("http://images.sohu.com/bill/s2012/gates/all/map.2013040302.js");}</script>
+<Script language="Javascript" src="http://images.sohu.com/bill/s2013/gates/js/fad_v9.js"></Script>
+<Script language="Javascript" src="http://images.sohu.com/bill/default/auto/pop.1.4.js?t=168"></Script></SOHUADCODE>
+<SOHUADCODE></SOHUADCODE>
+<script type='text/javascript'>	
+	function q(s) {return s.replace(/%/g,"%25").replace(/&/g,"%26").replace(/#/g,"%23");}	
+	var sogou_is_brand_url = "http://cpc.brand.sogou.com/brand_ad_new";	
+	var brand_cnt = 0;	
+	for(var p in sogou_is_brand)	
+	{	           if(typeof(sogou_is_brand[p]) == "string")
+	               sogou_is_brand_url += (brand_cnt++ ? "&" : "?") + q(p) + "=" + q(sogou_is_brand[p]);	
+	}	
+	if (brand_cnt>3)	
+	{	
+	         var test= document.createElement('SCRIPT');	
+	         test.src=sogou_is_brand_url;	
+	         document.getElementsByTagName('head')[0].appendChild(test);	
+	}	
+</script>
+<div style="display:none" id="sohu-dt0220mine-tag">news</div><script src='http://news.sohu.com/upload/pop/mytag.min.js' type='text/javascript'></script>
+
+
+
+<script>
+pv_area_register("401832","pvblock1");
+</script>
+</body>
+</html>

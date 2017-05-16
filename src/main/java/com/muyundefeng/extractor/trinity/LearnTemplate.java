@@ -49,7 +49,7 @@ public class LearnTemplate {
         }
         if (isLeaf(node)) {
             if (isVariable(node)) {
-                result += freshCaptureGroup();
+                result += ".*";
                 List<Text> texts = node.getTexts();
                 for (Text text : texts)
                     logger.info("访问捕获成功三叉树节点=" + text.getText());
@@ -87,14 +87,11 @@ public class LearnTemplate {
     public boolean isOptional(Node node) {
         List<Text> list = node.getTexts();
         boolean isOptional = false;
-        int noEmpty = 0;
         int empty = 0;
         for (Text text : list) {
             if (text.getText().equals(NO_PREFFIX) || text.getText().equals(NO_SEPERATOR)
                     || text.getText().equals(NO_SUFFIX)) {
                 empty++;
-            } else {
-                noEmpty++;
             }
         }
         if (empty > 0 && empty < list.size())
@@ -114,7 +111,10 @@ public class LearnTemplate {
         String pattern = node.getPattern().getString();
         List<Text> texts = node.getTexts();
         for (Text text : texts) {
-            if (count(text.getText(), pattern) > 1) {
+            if (text.getText().equals(NO_PREFFIX) &&
+                    text.getText().equals(NO_SEPERATOR) &&
+                    text.getText().equals(NO_SUFFIX) &&
+                    count(text.getText(), pattern) > 1) {
                 isRepeatable |= true;
                 break;
             } else {
@@ -151,12 +151,11 @@ public class LearnTemplate {
      * @return
      */
     public boolean contain(Node node) {
-        boolean isContain = false;
+        boolean isContain = true;
         List<Text> list = node.getTexts();
         for (Text text : list) {
             if (text.getText().contains(NO_SEPERATOR)) {
-                isContain = true;
-                break;
+                isContain &= true;
             } else {
                 isContain &= false;
             }
@@ -191,7 +190,7 @@ public class LearnTemplate {
         boolean isVariable = true;
         List<Text> texts = node.getTexts();
         for (Text text : texts) {
-            if (!text.getText().contains("<") && !text.getText().equals(NO_PREFFIX)
+            if (!text.getText().matches("<[^>]*>") && !text.getText().equals(NO_PREFFIX)
                     && !text.getText().equals(NO_SEPERATOR)
                     && !text.getText().equals(NO_SUFFIX))
                 isVariable &= true;

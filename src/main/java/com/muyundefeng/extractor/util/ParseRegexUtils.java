@@ -52,8 +52,11 @@ public class ParseRegexUtils {
      * @param str 要处理的正则表达式
      * @return 返回正常的正则表达式
      */
-    public static String getNormalRegex(String str) {
-        str = str.replaceAll("\\.\\*", "(.*)");
+    public static String getNormalRegex(String str, int size) {
+        if (size != 1)
+            str = str.replaceAll("\\.\\*", "([^<]*)");
+        else
+            str = str.replaceAll("\\.\\*", "(.*)");
         return str;
     }
 
@@ -64,6 +67,8 @@ public class ParseRegexUtils {
      * @return
      */
     public static String cutRegex(String str) {
+        str = str.replaceAll("\\([^\\)]*\\)", "")
+                .replaceAll("\\+", "").replaceAll("\\?", "");
         char[] chars = str.toCharArray();
         int endIndex = 0;
         for (int i = 0; i < chars.length - 1; i++) {
@@ -74,14 +79,21 @@ public class ParseRegexUtils {
         endIndex++;
         int end = 0;
         //为了能够保证唯一性，需要在加几个标签
-        for (int i = endIndex; i < str.length(); i++) {
+        for (int i = endIndex; i <= str.length(); i++) {
             String str1 = str.substring(endIndex, i);
-            if (StringUtils.countMatches(str1, "<") == 2 && StringUtils.countMatches(str1, ">") == 2) {
+            if (StringUtils.countMatches(str1, "<") >= 1 && StringUtils.countMatches(str1, ">") >= 1
+                    && StringUtils.countMatches(str1, ">") == StringUtils.countMatches(str1, "<")) {
                 end = i;
                 break;
             }
         }
         return str.substring(0, end);
+    }
 
+    public static void main(String[] args) {
+        //String str = "<title>.*</title></div>(</div>)+<a>.*</a></div>(</a></div>)+.*</div>(</div>)+()?</div>(()?<a>(<a>)+</div>)+()?<a>(<a>)+()?</div>(.*</div>)+.*</div>(</div>)+";
+        // String str = "<title>.*</title><ul>客户端搜索频道</ul><a>下一篇</a><input>正文<a></a>.*<em></em>关注新华网微信微博<a></a>.*<a></a><ul></ul>加载更多<ul><a>.*</a><a>.*</a></ul>炫图 视频<ul><a>.*</a><a>(.*</a><a>)+.*</a><a>(.*</a><a>)+.*</a><a>.*</a></ul>热词<a><a>  </a><a>  </a><a>  </a></a>.*</body>";
+        String str = "<title>.*</title><ul>客户端搜索频道</ul><a>下一篇</a><input>正文<a></a>.*<em></em>关注新华网微信微博<a></a>.*<a></a><ul></ul>加载更多<ul><a>.*</a><a>.*</a></ul>炫图 视频<ul><a>.*</a><a>(.*</a><a>)+.*</a><a>(.*</a><a>)+.*</a><a>.*</a></ul>热词<a><a>  </a><a>  </a><a>  </a></a>.*</body>";
+        System.out.println(cutRegex(str));
     }
 }

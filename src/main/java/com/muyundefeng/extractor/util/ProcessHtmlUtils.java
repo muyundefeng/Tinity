@@ -18,6 +18,8 @@ public class ProcessHtmlUtils {
         html = html.replaceAll("(?is)<!DOCTYPE.*?>", "");
         html = html.replaceAll("(?is)<!--.*?-->", "");
         html = html.replaceAll("(?is)<script.*?>.*?</script>", "");
+        html = html.replaceAll("(?is)<iframe.*?>.*?</iframe>", "");
+        html = html.replaceAll("(?is)<noscript.*?>.*?</noscript>", "");
         html = html.replaceAll("(?is)<style.*?>.*?</style>", "");
         html = html.replaceAll("&.{2,5};|&#.{2,5};", " ");
         String patternStr = "<(\\w+)?(\\s[^>]+)>";
@@ -38,9 +40,7 @@ public class ProcessHtmlUtils {
         for (String str : rmInfos) {
             html = html.replace(str, "");
         }
-        html = html.replace(aLabel, "");
-        html = html.replaceAll("\\n", "");
-        html = html.replaceAll("\\s", "");//移除空格
+//        html = html.replaceAll("\\s", "");//移除空格
         html = html.replaceAll("<meta>", "");//移除meta元素
         html = html.replaceAll("<head>", "");//移除head元素
         html = html.replaceAll("<p>", "");//移除p标签
@@ -50,6 +50,32 @@ public class ProcessHtmlUtils {
         html = html.replaceAll("<strong>", "");//移除strong
         html = html.replaceAll("</strong>", "");
         html = html.replaceAll("<img>", "");//移除图片
+        html = html.replaceAll("<br>", "");
+        html = html.replaceAll("<link>", "");
+        html = html.replaceAll("<font>", "");
+        html = html.replaceAll("</font>", "");
+        html = html.replaceAll("<li>", "");
+        html = html.replaceAll("</li>", "");
+        html = html.replaceAll("\\n+", "\n");
+        html = html.replaceAll("<em>", "");
+        html = html.replaceAll("</em>", "");
+        html = html.replaceAll("<(/)?h[^>]*>", "");
+        html = html.replaceAll("<(/)?ul[^>]*>", "");
+//        html = html.replaceAll("(?is)<iframe[^>]*>", "");
+        String aLabel1 = ExtraMainBodyUtils.extraMainBody(html, "<a>");//根据文本块进行判断
+        String labels[] = aLabel1.split("\\n");
+        for (String label : labels) {
+            html = html.replace(label, "");
+        }
+        String segs[] = html.split("\\n");
+        html = "";
+        for (String seg : segs) {
+            html += rmSomeNoisy(seg) + "\n";
+            if (html.contains("footer"))
+                break;
+        }
+        html = html.replaceAll("\\n", "");
+        html = html.replaceAll("\\s", "");
 
         //提取出有元素的数据
         String extraEleData = "(?i)<[^>]+>[^<]+<[^>]+>";
@@ -60,7 +86,17 @@ public class ProcessHtmlUtils {
             String str = matcher1.group(0);
             afterProcessHtml += str;
         }
+//        System.out.println(afterProcessHtml);
+//        System.exit(0);
         return afterProcessHtml;
+    }
+
+    public static String rmSomeNoisy(String str) {
+        int count = StringUtils.countMatches(str, "<a>");
+        if (count > 3)
+            return "";
+        else
+            return str;
     }
 
     public static void main(String[] args) {

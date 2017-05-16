@@ -5,6 +5,7 @@ import com.muyundefeng.extractor.trinity.CreateTrinity;
 import com.muyundefeng.extractor.trinity.LearnTemplate;
 import com.muyundefeng.extractor.trinity.Node;
 import com.muyundefeng.extractor.trinity.Text;
+import com.muyundefeng.extractor.util.CutRegexUtils;
 import com.muyundefeng.extractor.util.ParseRegexUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,15 +86,19 @@ public class TestTrinity {
 
         LearnTemplate learnTemplate = new LearnTemplate();
         String regex = learnTemplate.learnTemplate(node, "");//提取正则表达式
-        System.out.println(regex);
-        logger.info("使用提取的正则表达式进行文本获取");
-        regex = ParseRegexUtils.cutRegex(regex);
-        int groupNumbers = ParseRegexUtils.analyseNumberGroup(regex);
-        regex = ParseRegexUtils.getNormalRegex(regex);
         System.out.println("regex=" + regex);
-        System.out.println(groupNumbers);
-        for (int i = 1; i <= 4; i++) {
-            System.out.println(ParseRegexUtils.extraText(regex, i, texts.get(0).getText()));
+        List<String> regexs = CutRegexUtils.getRegexs(regex, texts.get(0).getText());
+        System.out.println(regexs);
+        logger.info("使用提取的正则表达式进行文本获取");
+        // regex = ParseRegexUtils.cutRegex(regex);
+        for (String regex1 : regexs) {
+            int groupNumbers = ParseRegexUtils.analyseNumberGroup(regex1);
+            regex1 = ParseRegexUtils.getNormalRegex(regex1,regexs.size());
+            System.out.println("regex=" + regex1);
+            System.out.println(groupNumbers);
+            for (int i = 1; i <= groupNumbers; i++) {
+                System.out.println(ParseRegexUtils.extraText(regex1, i, texts.get(0).getText()));
+            }
         }
     }
 }
